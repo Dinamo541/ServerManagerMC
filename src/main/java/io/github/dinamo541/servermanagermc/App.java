@@ -1,38 +1,62 @@
 package io.github.dinamo541.servermanagermc;
 
+import io.github.dinamo541.corefx.navigation.FlowController;
+import io.github.dinamo541.corefx.ui.ThemeManager;
+import io.github.dinamo541.servermanagermc.concurrent.AsyncExecutor;
+import io.github.dinamo541.servermanagermc.config.AppProfile;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 /**
- * JavaFX App
+ * Punto de entrada JavaFX. Cablea el theming (AtlantaFX + ThemeManager de CoreFx)
+ * y la navegación (FlowController), y muestra el shell (HomeView = BorderPane con
+ * sidebar). Toda la lógica vive en la capa de servicios.
  */
 public class App extends Application {
 
-    private static Scene scene;
+    public static final String APP_NAME = "Server Minecraft Manager";
 
     @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+    public void init() {
+        // Resuelve el perfil temprano: DEV (mock) en Windows / PROD (real) en Monica.
+        System.out.println("[ServerManagerMC] Perfil activo: " + AppProfile.current());
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+    @Override
+    public void start(Stage stage) {
+        // 1) Tema oscuro propio (DarkThemeStyle.css) registrado en el ThemeManager
+        //    de CoreFx y aplicado a cada escena vía themeApplier.
+        ThemeManager theme = ThemeManager.getInstance();
+        var darkCss = getClass().getResource("view/DarkThemeStyle.css");
+        if (darkCss != null) {
+            theme.registerTheme("dark", darkCss.toExternalForm());
+            theme.setActiveTheme("dark");
+        }
+
+        // 2) Bootstrap de CoreFx (convención del proyecto: view/, resources/, icon.png).
+        FlowController flow = FlowController.getInstance();
+        flow.initialize(
+            stage,
+            APP_NAME,
+            "/io/github/dinamo541/servermanagermc/view/",
+            "/io/github/dinamo541/servermanagermc/resources/",
+            "/io/github/dinamo541/servermanagermc/icon.png",
+            App.class
+        );
+        flow.setThemeApplier(theme.asApplier());
+
+        // 3) Ventana + mostrar el shell.
+        stage.setTitle(APP_NAME + " — Panel de Monica");
+        flow.goViewMain("HomeView");
+        flow.setStageMinSize(1024, 640);
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    @Override
+    public void stop() {
+        AsyncExecutor.shutdown();
     }
 
     public static void main(String[] args) {
         launch();
     }
-
 }

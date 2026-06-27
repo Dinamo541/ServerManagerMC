@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            // Compila (Ctrl+Shift+B). NO usa `clean` a propósito: OneDrive suele
+            // bloquear target/ y `mvn clean` falla.
+            "label": "compile",
+            "type": "shell",
+            "command": "mvn",
+            "args": ["-q", "compile"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            // Corre la app vía el plugin de JavaFX (camino más confiable, igual
+            // que NetBeans). Run Task → "run (javafx:run)".
+            "label": "run (javafx:run)",
+            "type": "shell",
+            "command": "mvn",
+            "args": ["javafx:run"],
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

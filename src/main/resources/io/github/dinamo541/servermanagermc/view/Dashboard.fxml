@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.github.dinamo541.servermanagermc.controller.DashboardController"
+      spacing="18.0" styleClass="content">
+    <padding>
+        <Insets bottom="22.0" left="24.0" right="24.0" top="22.0"/>
+    </padding>
+
+    <Label styleClass="title" text="Dashboard"/>
+
+    <HBox spacing="12.0" styleClass="state-row">
+        <Label fx:id="stateDot" styleClass="state-dot" text="●"/>
+        <Label fx:id="stateLabel" styleClass="state-text" text="—"/>
+    </HBox>
+
+    <FlowPane hgap="16.0" vgap="16.0">
+        <VBox spacing="6.0" styleClass="stat-card">
+            <Label styleClass="stat-caption" text="Uptime"/>
+            <Label fx:id="uptimeLabel" styleClass="stat-value" text="—"/>
+        </VBox>
+        <VBox spacing="6.0" styleClass="stat-card">
+            <Label styleClass="stat-caption" text="RAM"/>
+            <Label fx:id="ramLabel" styleClass="stat-value" text="—"/>
+        </VBox>
+        <VBox spacing="6.0" styleClass="stat-card">
+            <Label styleClass="stat-caption" text="CPU"/>
+            <Label fx:id="cpuLabel" styleClass="stat-value" text="—"/>
+        </VBox>
+        <VBox spacing="6.0" styleClass="stat-card">
+            <Label styleClass="stat-caption" text="Jugadores"/>
+            <Label fx:id="playersLabel" styleClass="stat-value" text="—"/>
+        </VBox>
+        <VBox spacing="6.0" styleClass="stat-card">
+            <Label styleClass="stat-caption" text="TPS"/>
+            <Label fx:id="tpsLabel" styleClass="stat-value" text="—"/>
+        </VBox>
+    </FlowPane>
+</VBox>

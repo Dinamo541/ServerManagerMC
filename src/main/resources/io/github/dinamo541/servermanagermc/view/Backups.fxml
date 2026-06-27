@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.github.dinamo541.servermanagermc.controller.BackupsController"
+      alignment="CENTER" spacing="10.0" styleClass="content">
+    <Label styleClass="title" text="Backups"/>
+    <Label styleClass="muted" text="Módulo en construcción — Etapa 4 (backups locales + Drive, restaurar)."/>
+</VBox>

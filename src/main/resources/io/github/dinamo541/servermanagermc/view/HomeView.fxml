@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="rootPane" prefHeight="640.0" prefWidth="1024.0"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="io.github.dinamo541.servermanagermc.controller.HomeController">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="jfx-container-top">
+            <padding>
+                <Insets bottom="14.0" left="20.0" right="20.0" top="14.0"/>
+            </padding>
+            <Label styleClass="jfx-headline-1" text="Server Manager"/>
+            <Label styleClass="brand-sub" text="· Panel de Monica"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="profileLabel" styleClass="profile-badge" text="—"/>
+        </HBox>
+    </top>
+    <left>
+        <VBox prefWidth="210.0" spacing="6.0" styleClass="sidebar">
+            <padding>
+                <Insets bottom="16.0" left="12.0" right="12.0" top="16.0"/>
+            </padding>
+            <Button maxWidth="Infinity" onAction="#goDashboard" styleClass="nav-button" text="Dashboard"/>
+            <Button maxWidth="Infinity" onAction="#goControl" styleClass="nav-button" text="Control"/>
+            <Button maxWidth="Infinity" onAction="#goPlayers" styleClass="nav-button" text="Jugadores"/>
+            <Button maxWidth="Infinity" onAction="#goProperties" styleClass="nav-button" text="Properties"/>
+            <Button maxWidth="Infinity" onAction="#goMods" styleClass="nav-button" text="Mods y Plugins"/>
+            <Button maxWidth="Infinity" onAction="#goBackups" styleClass="nav-button" text="Backups"/>
+            <Button maxWidth="Infinity" onAction="#goWorld" styleClass="nav-button" text="Mundo"/>
+        </VBox>
+    </left>
+</BorderPane>

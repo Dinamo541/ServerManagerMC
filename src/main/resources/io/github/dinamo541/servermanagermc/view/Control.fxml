@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.github.dinamo541.servermanagermc.controller.ControlController"
+      spacing="14.0" styleClass="content">
+    <padding>
+        <Insets bottom="22.0" left="24.0" right="24.0" top="22.0"/>
+    </padding>
+
+    <Label styleClass="title" text="Control"/>
+
+    <HBox spacing="10.0">
+        <Button onAction="#onStart" prefWidth="110.0" styleClass="success" text="Start"/>
+        <Button onAction="#onRestart" prefWidth="110.0" styleClass="accent" text="Restart"/>
+        <Button onAction="#onStop" prefWidth="110.0" styleClass="danger" text="Stop"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="statusLabel" styleClass="status" text=""/>
+    </HBox>
+
+    <TextArea fx:id="console" editable="false" styleClass="console" VBox.vgrow="ALWAYS"/>
+
+    <HBox spacing="10.0">
+        <TextField fx:id="commandField" onAction="#onSend" HBox.hgrow="ALWAYS"
+                   promptText="Escribe un comando (p. ej. list, say hola, save-all)…"/>
+        <Button onAction="#onSend" prefWidth="110.0" text="Enviar"/>
+    </HBox>
+</VBox>

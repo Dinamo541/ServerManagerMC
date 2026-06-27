@@ -1,0 +1,273 @@
+/*
+ * DarkThemeStyle — tema oscuro (paleta violeta) de ServerManagerMC.
+ * Define la paleta base, los overrides de MaterialFX y los componentes del panel.
+ *
+ *   ========================================================================
+ *    GLOBAL VARIABLES
+ *   ========================================================================
+ */
+
+* {
+    /* ===== FONT ===== */
+    -fx-font-family: "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
+
+    /* ===== BASE PALETTE ===== */
+    -fx-color-primary-900: #6E4C8F;
+    -fx-color-primary-700: #8E6BAF;
+    -fx-color-primary-500: #BFA6D9;
+    -fx-color-primary-300: #E6DFF2;
+    -fx-color-primary-100: #F5F2FA;
+
+    -fx-color-accent-900: #E65100;
+    -fx-color-accent-700: #EF6C00;
+    -fx-color-accent-500: #F57C00;
+    -fx-color-accent-300: #FFA726;
+
+    /* ===== BACKGROUNDS ===== */
+    -fx-color-bg-main: #1E1625;
+    -fx-color-bg-secondary: #2A1F33;
+    -fx-color-bg-deep: #140F1A;
+
+    /* ===== SURFACES ===== */
+    -fx-color-surface: #2A1F33;
+    -fx-color-surface-muted: #3A2B47;
+    -fx-color-surface-hover: #4A365B;
+    -fx-color-surface-pressed: #5A426E;
+
+    /* ===== TEXT ===== */
+    -fx-color-text-primary: #F5F2FA;
+    -fx-color-text-secondary: #C5B8D6;
+    -fx-color-text-on-primary: white;
+
+    /* ===== BORDERS ===== */
+    -fx-color-border-base: #5A426E;
+    -fx-color-border-soft: #3A2B47;
+    -fx-color-border-strong: #8E6BAF;
+
+    /* ===== STATUS ===== */
+    -fx-color-online: #66BB6A;
+    -fx-color-offline: #EF5350;
+
+    /* ===== BUTTONS ===== */
+    -fx-color-btn-primary: -fx-color-primary-700;
+    -fx-color-btn-hover: -fx-color-primary-500;
+    -fx-color-btn-pressed: -fx-color-primary-900;
+
+    /* ===== EFFECTS ===== */
+    -fx-color-shadow: rgba(0, 0, 0, 0.5);
+
+    /* ===== BACKGROUND ===== */
+    -fx-background-color: -fx-color-bg-main;
+
+    /* =============== MATERIALFX COLOR REWRITING =============== */
+    -mfx-main: -fx-color-primary-900;
+    -mfx-blue: -fx-color-primary-500;
+    -mfx-red: -fx-color-accent-900;
+    -mfx-purple: -fx-color-primary-900;
+    -mfx-orange: -fx-color-accent-500;
+    -mfx-yellow: -fx-color-accent-300;
+    -mfx-text-he: rgba(245, 242, 250, 0.87);
+    -mfx-text-me: rgba(245, 242, 250, 0.60);
+    -mfx-text-disabled: rgba(245, 242, 250, 0.38);
+
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-mark-color: -fx-color-primary-500;
+}
+
+/* ========================================================================
+    CONTAINERS
+   ======================================================================== */
+
+.jfx-container-top {
+    -fx-background-color: -fx-color-bg-main;
+    -fx-border-color: -fx-color-border-base;
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-background-radius: 4px;
+}
+
+/* ========================================================================
+    BUTTONS
+   ======================================================================== */
+
+.button {
+    -fx-background-color: -fx-color-btn-primary;
+    -fx-text-fill: -fx-color-text-on-primary;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: -fx-color-btn-hover;
+}
+
+.button:pressed {
+    -fx-background-color: -fx-color-btn-pressed;
+}
+
+/* ========================================================================
+    LABELS
+   ======================================================================== */
+
+.label {
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.jfx-headline-1,
+.jfx-headline-1 .label {
+    -fx-background-color: transparent;
+
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+
+    -fx-effect: dropshadow(gaussian, -fx-color-primary-500, 2, 0.5, -0.5, 1);
+}
+
+.jfx-headline-2,
+.jfx-headline-2 .label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+/* ========================================================================
+    PANEL — componentes del shell y los módulos
+   ======================================================================== */
+
+.brand-sub {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 12px;
+}
+
+.profile-badge {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-background-color: -fx-color-surface-muted;
+    -fx-background-radius: 6px;
+    -fx-padding: 6 10 6 10;
+}
+
+/* ---- Sidebar de navegación ---- */
+.sidebar {
+    -fx-background-color: -fx-color-bg-secondary;
+    -fx-border-color: transparent -fx-color-border-soft transparent transparent;
+    -fx-border-width: 1px;
+}
+
+.nav-button {
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-weight: normal;
+    -fx-padding: 9 12 9 12;
+    -fx-background-radius: 8px;
+}
+
+.nav-button:hover {
+    -fx-background-color: -fx-color-surface-hover;
+}
+
+.nav-button:pressed {
+    -fx-background-color: -fx-color-surface-pressed;
+}
+
+/* ---- Área de contenido ---- */
+.content {
+    -fx-background-color: -fx-color-bg-main;
+}
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.muted {
+    -fx-text-fill: -fx-color-text-secondary;
+}
+
+/* ---- Dashboard ---- */
+.state-row {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.state-text {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.state-dot {
+    -fx-font-size: 18px;
+}
+
+.state-dot.online {
+    -fx-text-fill: -fx-color-online;
+}
+
+.state-dot.offline {
+    -fx-text-fill: -fx-color-offline;
+}
+
+.stat-card {
+    -fx-background-color: -fx-color-surface;
+    -fx-background-radius: 12px;
+    -fx-border-color: -fx-color-border-soft;
+    -fx-border-radius: 12px;
+    -fx-padding: 16 22 16 22;
+    -fx-min-width: 150;
+}
+
+.stat-caption {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 12px;
+}
+
+.stat-value {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* ---- Control: consola + botones semánticos ---- */
+.console {
+    -fx-font-family: "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 12px;
+}
+
+.console .content {
+    -fx-background-color: -fx-color-bg-deep;
+}
+
+.console .text {
+    -fx-fill: -fx-color-text-primary;
+}
+
+.status {
+    -fx-text-fill: -fx-color-text-secondary;
+}
+
+.button.success {
+    -fx-background-color: #43A047;
+}
+
+.button.success:hover {
+    -fx-background-color: #4CAF50;
+}
+
+.button.danger {
+    -fx-background-color: -fx-color-offline;
+}
+
+.button.danger:hover {
+    -fx-background-color: #F44336;
+}
+
+.button.accent {
+    -fx-background-color: -fx-color-accent-700;
+}
+
+.button.accent:hover {
+    -fx-background-color: -fx-color-accent-500;
+}

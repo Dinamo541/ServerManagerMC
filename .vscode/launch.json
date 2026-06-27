@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Ejecutar/depurar con el debugger de Java (F5). Al haber module-info,
+            // la extensión pone JavaFX en el module-path y lanza el módulo.
+            "type": "java",
+            "name": "ServerManagerMC (DEV / mock)",
+            "request": "launch",
+            "mainClass": "io.github.dinamo541.servermanagermc.App",
+            "projectName": "ServerManagerMC",
+            "vmArgs": "--enable-native-access=javafx.graphics"
+        },
+        {
+            // Igual pero forzando el perfil PROD (comandos reales de Linux).
+            // Útil solo si se corre sobre Monica; en Windows usar el de arriba.
+            "type": "java",
+            "name": "ServerManagerMC (PROD / real)",
+            "request": "launch",
+            "mainClass": "io.github.dinamo541.servermanagermc.App",
+            "projectName": "ServerManagerMC",
+            "vmArgs": "--enable-native-access=javafx.graphics -Dmonica.profile=prod"
+        }
+    ]
+}
