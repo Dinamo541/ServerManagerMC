@@ -18,19 +18,29 @@
 
     <Label styleClass="title" text="Control"/>
 
-    <HBox spacing="10.0">
-        <Button onAction="#onStart" prefWidth="110.0" styleClass="success" text="Start"/>
-        <Button onAction="#onRestart" prefWidth="110.0" styleClass="accent" text="Restart"/>
-        <Button onAction="#onStop" prefWidth="110.0" styleClass="danger" text="Stop"/>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Button onAction="#onStart" prefWidth="120.0" styleClass="success" text="▶  Iniciar"/>
+        <Button onAction="#onRestart" prefWidth="120.0" styleClass="accent" text="⟳  Reiniciar"/>
+        <Button onAction="#onStop" prefWidth="120.0" styleClass="danger" text="■  Detener"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Label fx:id="statusLabel" styleClass="status" text=""/>
     </HBox>
 
-    <TextArea fx:id="console" editable="false" styleClass="console" VBox.vgrow="ALWAYS"/>
+    <!-- Cabecera de la consola -->
+    <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="console-head">
+        <Label fx:id="liveDot" styleClass="state-dot online" text="●"/>
+        <Label styleClass="console-title" text="Consola en vivo"/>
+        <Label styleClass="muted" text="latest.log"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#onClear" styleClass="ghost" text="Limpiar"/>
+    </HBox>
 
-    <HBox spacing="10.0">
+    <TextArea fx:id="console" editable="false" styleClass="console" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+    <HBox spacing="10.0" styleClass="console-input">
+        <Label styleClass="prompt-mark" text="❯"/>
         <TextField fx:id="commandField" onAction="#onSend" HBox.hgrow="ALWAYS"
                    promptText="Escribe un comando (p. ej. list, say hola, save-all)…"/>
-        <Button onAction="#onSend" prefWidth="110.0" text="Enviar"/>
+        <Button onAction="#onSend" prefWidth="110.0" text="Enviar  ➤"/>
     </HBox>
 </VBox>

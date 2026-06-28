@@ -8,32 +8,70 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPane" prefHeight="640.0" prefWidth="1024.0"
+<BorderPane fx:id="rootPane" prefHeight="640.0" prefWidth="1024.0" styleClass="app-root"
             xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="io.github.dinamo541.servermanagermc.controller.HomeController">
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="jfx-container-top">
+        <HBox alignment="CENTER_LEFT" spacing="14.0" styleClass="jfx-container-top">
             <padding>
                 <Insets bottom="14.0" left="20.0" right="20.0" top="14.0"/>
             </padding>
-            <Label styleClass="jfx-headline-1" text="Server Manager"/>
-            <Label styleClass="brand-sub" text="· Panel de Monica"/>
+            <Label styleClass="brand-mark" text="◆"/>
+            <VBox spacing="0.0">
+                <Label styleClass="jfx-headline-1" text="Server Manager"/>
+                <Label styleClass="brand-sub" text="Panel de Monica"/>
+            </VBox>
             <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Estado rápido del servidor -->
+            <HBox alignment="CENTER" spacing="10.0" styleClass="status-pill">
+                <Label fx:id="headerDot" styleClass="status-dot" text="●"/>
+                <Label fx:id="headerStateLabel" styleClass="status-pill-text" text="—"/>
+                <Label styleClass="status-sep" text="│"/>
+                <Label styleClass="status-pill-cap" text="uptime"/>
+                <Label fx:id="headerUptimeLabel" styleClass="status-pill-muted" text="—"/>
+                <Label styleClass="status-sep" text="│"/>
+                <Label styleClass="status-pill-cap" text="jugadores"/>
+                <Label fx:id="headerPlayersLabel" styleClass="status-pill-muted" text="—"/>
+            </HBox>
+
             <Label fx:id="profileLabel" styleClass="profile-badge" text="—"/>
         </HBox>
     </top>
     <left>
-        <VBox prefWidth="210.0" spacing="6.0" styleClass="sidebar">
+        <VBox prefWidth="212.0" spacing="16.0" styleClass="sidebar">
             <padding>
-                <Insets bottom="16.0" left="12.0" right="12.0" top="16.0"/>
+                <Insets bottom="16.0" left="14.0" right="14.0" top="18.0"/>
             </padding>
-            <Button maxWidth="Infinity" onAction="#goDashboard" styleClass="nav-button" text="Dashboard"/>
-            <Button maxWidth="Infinity" onAction="#goControl" styleClass="nav-button" text="Control"/>
-            <Button maxWidth="Infinity" onAction="#goPlayers" styleClass="nav-button" text="Jugadores"/>
-            <Button maxWidth="Infinity" onAction="#goProperties" styleClass="nav-button" text="Properties"/>
-            <Button maxWidth="Infinity" onAction="#goMods" styleClass="nav-button" text="Mods y Plugins"/>
-            <Button maxWidth="Infinity" onAction="#goBackups" styleClass="nav-button" text="Backups"/>
-            <Button maxWidth="Infinity" onAction="#goWorld" styleClass="nav-button" text="Mundo"/>
+
+            <Label styleClass="sidebar-section" text="NAVEGACIÓN"/>
+
+            <VBox spacing="6.0">
+                <Button fx:id="navDashboard" maxWidth="Infinity" onAction="#goDashboard" styleClass="nav-button" text="Dashboard">
+                    <graphic><Label styleClass="nav-icon" text="▦"/></graphic>
+                </Button>
+                <Button fx:id="navControl" maxWidth="Infinity" onAction="#goControl" styleClass="nav-button" text="Control">
+                    <graphic><Label styleClass="nav-icon" text="⌨"/></graphic>
+                </Button>
+                <Button fx:id="navPlayers" maxWidth="Infinity" onAction="#goPlayers" styleClass="nav-button" text="Jugadores">
+                    <graphic><Label styleClass="nav-icon" text="☺"/></graphic>
+                </Button>
+                <Button fx:id="navProperties" maxWidth="Infinity" onAction="#goProperties" styleClass="nav-button" text="Properties">
+                    <graphic><Label styleClass="nav-icon" text="⚙"/></graphic>
+                </Button>
+                <Button fx:id="navMods" maxWidth="Infinity" onAction="#goMods" styleClass="nav-button" text="Mods y Plugins">
+                    <graphic><Label styleClass="nav-icon" text="❖"/></graphic>
+                </Button>
+                <Button fx:id="navBackups" maxWidth="Infinity" onAction="#goBackups" styleClass="nav-button" text="Backups">
+                    <graphic><Label styleClass="nav-icon" text="▤"/></graphic>
+                </Button>
+                <Button fx:id="navWorld" maxWidth="Infinity" onAction="#goWorld" styleClass="nav-button" text="Mundo">
+                    <graphic><Label styleClass="nav-icon" text="◍"/></graphic>
+                </Button>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label styleClass="sidebar-foot" text="v0.1 · Mohist 1.19.2"/>
         </VBox>
     </left>
 </BorderPane>

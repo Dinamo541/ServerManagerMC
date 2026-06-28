@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="io.github.dinamo541.servermanagermc.controller.PropertiesController"
-      alignment="CENTER" spacing="10.0" styleClass="content">
-    <Label styleClass="title" text="Properties"/>
-    <Label styleClass="muted" text="Módulo en construcción — Etapa 3 (editor visual de server.properties)."/>
+      alignment="CENTER" styleClass="content">
+    <VBox alignment="CENTER" maxWidth="520.0" spacing="14.0" styleClass="placeholder">
+        <padding>
+            <Insets bottom="36.0" left="40.0" right="40.0" top="36.0"/>
+        </padding>
+        <Label styleClass="placeholder-icon" text="⚙"/>
+        <Label styleClass="placeholder-title" text="Properties"/>
+        <Label styleClass="placeholder-badge" text="PRÓXIMAMENTE · ETAPA 3"/>
+        <Label styleClass="placeholder-desc" wrapText="true"
+               text="Editor visual de server.properties: interruptores, deslizadores y listas, protegiendo opciones sensibles."/>
+        <ProgressBar maxWidth="Infinity" progress="0.10" styleClass="dev-bar"/>
+        <Label styleClass="placeholder-foot" text="10 % planificado"/>
+    </VBox>
 </VBox>

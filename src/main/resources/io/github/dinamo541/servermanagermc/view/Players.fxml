@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="io.github.dinamo541.servermanagermc.controller.PlayersController"
-      alignment="CENTER" spacing="10.0" styleClass="content">
-    <Label styleClass="title" text="Jugadores"/>
-    <Label styleClass="muted" text="Módulo en construcción — Etapa 2 (whitelist, ops, kick/ban)."/>
+      alignment="CENTER" styleClass="content">
+    <VBox alignment="CENTER" maxWidth="520.0" spacing="14.0" styleClass="placeholder">
+        <padding>
+            <Insets bottom="36.0" left="40.0" right="40.0" top="36.0"/>
+        </padding>
+        <Label styleClass="placeholder-icon" text="☺"/>
+        <Label styleClass="placeholder-title" text="Jugadores"/>
+        <Label styleClass="placeholder-badge" text="PRÓXIMAMENTE · ETAPA 2"/>
+        <Label styleClass="placeholder-desc" wrapText="true"
+               text="Whitelist, operadores y moderación (kick/ban) desde el panel, con validación de nombres."/>
+        <ProgressBar maxWidth="Infinity" progress="0.15" styleClass="dev-bar"/>
+        <Label styleClass="placeholder-foot" text="15 % planificado"/>
+    </VBox>
 </VBox>

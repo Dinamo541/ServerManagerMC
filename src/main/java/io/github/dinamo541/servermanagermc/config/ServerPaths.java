@@ -17,6 +17,7 @@ public final class ServerPaths {
     public static final String MODS        = SERVER + "/mods";
     public static final String PLUGINS     = SERVER + "/plugins";
     public static final String LOG         = SERVER + "/logs/latest.log";
+    public static final String VERSION_FILE = SERVER + "/version.txt";
     public static final String PROPERTIES  = SERVER + "/server.properties";
     public static final String WHITELIST   = SERVER + "/whitelist.json";
     public static final String OPS         = SERVER + "/ops.json";
@@ -30,4 +31,5 @@ public final class ServerPaths {
     public static final String SERVICE       = "mohist";
     public static final String TMUX_SESSION  = "mc";
     public static final String RCLONE_REMOTE = "gdrive:backups-servidor";
+    public static final String PORT          = "25565";
 }

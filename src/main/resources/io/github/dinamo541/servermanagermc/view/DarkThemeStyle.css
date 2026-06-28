@@ -1,17 +1,19 @@
 /*
- * DarkThemeStyle — tema oscuro (paleta violeta) de ServerManagerMC.
- * Define la paleta base, los overrides de MaterialFX y los componentes del panel.
+ * DarkThemeStyle — tema oscuro (paleta violeta/naranja) de ServerManagerMC.
+ * Rediseño moderno: gradientes sutiles, glassmorphism, glow, barras de nivel.
  *
- *   ========================================================================
- *    GLOBAL VARIABLES
- *   ========================================================================
+ * Nota: JavaFX CSS NO soporta transiciones/keyframes ni backdrop-filter. Las
+ * animaciones viven en AnimationUtil; el "glass" se simula con superficies
+ * translúcidas (rgba) sobre el gradiente de fondo + bordes con brillo tenue.
  */
 
-* {
-    /* ===== FONT ===== */
+/* ========================================================================
+    VARIABLES (definidas en .root → cascada a toda la escena, popups incl.)
+   ======================================================================== */
+.root {
     -fx-font-family: "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
 
-    /* ===== BASE PALETTE ===== */
+    /* ===== PALETTE ===== */
     -fx-color-primary-900: #6E4C8F;
     -fx-color-primary-700: #8E6BAF;
     -fx-color-primary-500: #BFA6D9;
@@ -47,19 +49,16 @@
     /* ===== STATUS ===== */
     -fx-color-online: #66BB6A;
     -fx-color-offline: #EF5350;
+    -fx-color-warn: #FFA726;
 
     /* ===== BUTTONS ===== */
     -fx-color-btn-primary: -fx-color-primary-700;
     -fx-color-btn-hover: -fx-color-primary-500;
     -fx-color-btn-pressed: -fx-color-primary-900;
 
-    /* ===== EFFECTS ===== */
     -fx-color-shadow: rgba(0, 0, 0, 0.5);
 
-    /* ===== BACKGROUND ===== */
-    -fx-background-color: -fx-color-bg-main;
-
-    /* =============== MATERIALFX COLOR REWRITING =============== */
+    /* =============== MATERIALFX (reservado para Etapa 7) =============== */
     -mfx-main: -fx-color-primary-900;
     -mfx-blue: -fx-color-primary-500;
     -mfx-red: -fx-color-accent-900;
@@ -72,68 +71,95 @@
 
     -fx-text-fill: -fx-color-text-primary;
     -fx-mark-color: -fx-color-primary-500;
+    -fx-background-color: -fx-color-bg-main;
 }
 
 /* ========================================================================
-    CONTAINERS
+    VENTANA Y CONTENEDORES
+   ======================================================================== */
+
+/* Fondo general de la ventana: gradiente sutil en diagonal. */
+.app-root {
+    -fx-background-color: linear-gradient(to bottom right,
+        #211829 0%, #1A1322 55%, #130D1B 100%);
+}
+
+/* El área de contenido es transparente para que se vea el gradiente. */
+.content {
+    -fx-background-color: transparent;
+}
+
+.content-scroll,
+.content-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.content-scroll {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: transparent;
+}
+
+/* ---- Scrollbar personalizada ---- */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar > .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar > .thumb {
+    -fx-background-color: -fx-color-surface-pressed;
+    -fx-background-radius: 8;
+    -fx-background-insets: 3;
+}
+
+.scroll-bar > .thumb:hover {
+    -fx-background-color: -fx-color-primary-700;
+}
+
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ========================================================================
+    HEADER
    ======================================================================== */
 
 .jfx-container-top {
-    -fx-background-color: -fx-color-bg-main;
-    -fx-border-color: -fx-color-border-base;
-    -fx-border-width: 0px 0px 1px 0px;
-    -fx-background-radius: 4px;
+    -fx-background-color: rgba(19, 13, 26, 0.55);
+    -fx-border-color: transparent transparent rgba(142, 107, 175, 0.35) transparent;
+    -fx-border-width: 0 0 1 0;
 }
 
-/* ========================================================================
-    BUTTONS
-   ======================================================================== */
-
-.button {
-    -fx-background-color: -fx-color-btn-primary;
-    -fx-text-fill: -fx-color-text-on-primary;
-    -fx-font-weight: bold;
-    -fx-background-radius: 4px;
-    -fx-cursor: hand;
+.brand-mark {
+    -fx-text-fill: -fx-color-accent-500;
+    -fx-font-size: 22px;
+    -fx-effect: dropshadow(gaussian, rgba(245, 124, 0, 0.55), 10, 0.3, 0, 0);
 }
 
-.button:hover {
-    -fx-background-color: -fx-color-btn-hover;
-}
-
-.button:pressed {
-    -fx-background-color: -fx-color-btn-pressed;
-}
-
-/* ========================================================================
-    LABELS
-   ======================================================================== */
-
-.label {
-    -fx-text-fill: -fx-color-text-primary;
-}
-
-.jfx-headline-1,
-.jfx-headline-1 .label {
-    -fx-background-color: transparent;
-
-    -fx-font-size: 30px;
+.jfx-headline-1 {
+    -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-color-text-primary;
-
-    -fx-effect: dropshadow(gaussian, -fx-color-primary-500, 2, 0.5, -0.5, 1);
+    -fx-effect: dropshadow(gaussian, rgba(191, 166, 217, 0.45), 2, 0.4, 0, 1);
 }
 
-.jfx-headline-2,
-.jfx-headline-2 .label {
-    -fx-font-size: 20px;
+.jfx-headline-2 {
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-color-text-primary;
 }
-
-/* ========================================================================
-    PANEL — componentes del shell y los módulos
-   ======================================================================== */
 
 .brand-sub {
     -fx-text-fill: -fx-color-text-secondary;
@@ -144,24 +170,99 @@
     -fx-font-size: 11px;
     -fx-text-fill: -fx-color-text-secondary;
     -fx-background-color: -fx-color-surface-muted;
-    -fx-background-radius: 6px;
+    -fx-background-radius: 8px;
     -fx-padding: 6 10 6 10;
 }
 
-/* ---- Sidebar de navegación ---- */
+/* ---- Píldora de estado rápido ---- */
+.status-pill {
+    -fx-background-color: rgba(42, 31, 51, 0.6);
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(255, 255, 255, 0.07);
+    -fx-border-radius: 20px;
+    -fx-padding: 6 14 6 14;
+}
+
+.status-dot {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-color-text-secondary;
+}
+
+.status-dot.online {
+    -fx-text-fill: -fx-color-online;
+    -fx-effect: dropshadow(gaussian, #66BB6A, 9, 0.45, 0, 0);
+}
+
+.status-dot.offline {
+    -fx-text-fill: -fx-color-offline;
+    -fx-effect: dropshadow(gaussian, #EF5350, 7, 0.3, 0, 0);
+}
+
+.status-pill-text {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.status-pill-cap {
+    -fx-font-size: 10px;
+    -fx-text-fill: -fx-color-text-secondary;
+}
+
+.status-pill-muted {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.status-sep {
+    -fx-text-fill: rgba(197, 184, 214, 0.35);
+}
+
+/* ========================================================================
+    SIDEBAR
+   ======================================================================== */
+
 .sidebar {
-    -fx-background-color: -fx-color-bg-secondary;
-    -fx-border-color: transparent -fx-color-border-soft transparent transparent;
-    -fx-border-width: 1px;
+    -fx-background-color: linear-gradient(to bottom,
+        rgba(42, 31, 51, 0.85), rgba(24, 17, 31, 0.85));
+    -fx-border-color: transparent rgba(142, 107, 175, 0.18) transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-section {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-padding: 0 0 0 6;
+}
+
+.sidebar-foot {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-opacity: 0.7;
+    -fx-padding: 0 0 0 6;
 }
 
 .nav-button {
     -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 12;
     -fx-background-color: transparent;
     -fx-text-fill: -fx-color-text-primary;
     -fx-font-weight: normal;
+    -fx-font-size: 13px;
     -fx-padding: 9 12 9 12;
-    -fx-background-radius: 8px;
+    -fx-background-radius: 9px;
+    -fx-border-width: 0 0 0 3;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.nav-icon {
+    -fx-text-fill: -fx-color-primary-500;
+    -fx-font-size: 15px;
+    -fx-min-width: 18px;
+    -fx-alignment: CENTER;
 }
 
 .nav-button:hover {
@@ -172,13 +273,27 @@
     -fx-background-color: -fx-color-surface-pressed;
 }
 
-/* ---- Área de contenido ---- */
-.content {
-    -fx-background-color: -fx-color-bg-main;
+.nav-button.active {
+    -fx-background-color: rgba(142, 107, 175, 0.22);
+    -fx-border-color: transparent transparent transparent -fx-color-accent-500;
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-weight: bold;
+}
+
+.nav-button.active .nav-icon {
+    -fx-text-fill: -fx-color-accent-300;
+}
+
+/* ========================================================================
+    TIPOGRAFÍA
+   ======================================================================== */
+
+.label {
+    -fx-text-fill: -fx-color-text-primary;
 }
 
 .title {
-    -fx-font-size: 22px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-color-text-primary;
 }
@@ -187,36 +302,145 @@
     -fx-text-fill: -fx-color-text-secondary;
 }
 
-/* ---- Dashboard ---- */
-.state-row {
-    -fx-alignment: CENTER_LEFT;
+.status {
+    -fx-text-fill: -fx-color-text-secondary;
 }
 
-.state-text {
-    -fx-font-size: 16px;
+/* ========================================================================
+    BOTONES
+   ======================================================================== */
+
+.button {
+    -fx-background-color: -fx-color-btn-primary;
+    -fx-text-fill: -fx-color-text-on-primary;
     -fx-font-weight: bold;
+    -fx-background-radius: 9px;
+    -fx-padding: 9 16 9 16;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: -fx-color-btn-hover;
+    -fx-effect: dropshadow(gaussian, rgba(142, 107, 175, 0.5), 12, 0.2, 0, 3);
+}
+
+.button:pressed {
+    -fx-background-color: -fx-color-btn-pressed;
+}
+
+.button:disabled {
+    -fx-opacity: 0.4;
+    -fx-cursor: default;
+    -fx-effect: null;
+}
+
+.button.success {
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #43A047);
+}
+
+.button.success:hover {
+    -fx-background-color: linear-gradient(to bottom, #5CC85F, #4CAF50);
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.5), 12, 0.2, 0, 3);
+}
+
+.button.danger {
+    -fx-background-color: linear-gradient(to bottom, #EF5350, #E53935);
+}
+
+.button.danger:hover {
+    -fx-background-color: linear-gradient(to bottom, #F46462, #EF5350);
+    -fx-effect: dropshadow(gaussian, rgba(239, 83, 80, 0.5), 12, 0.2, 0, 3);
+}
+
+.button.accent {
+    -fx-background-color: linear-gradient(to bottom, #F57C00, #EF6C00);
+}
+
+.button.accent:hover {
+    -fx-background-color: linear-gradient(to bottom, #FB8C2A, #F57C00);
+    -fx-effect: dropshadow(gaussian, rgba(245, 124, 0, 0.5), 12, 0.2, 0, 3);
+}
+
+.button.ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-border-color: -fx-color-border-base;
+    -fx-border-radius: 9px;
+    -fx-font-weight: normal;
+}
+
+.button.ghost:hover {
+    -fx-background-color: -fx-color-surface-hover;
     -fx-text-fill: -fx-color-text-primary;
+    -fx-effect: null;
+}
+
+/* ========================================================================
+    DASHBOARD — hero, acciones, métricas
+   ======================================================================== */
+
+.state-hero {
+    -fx-background-color: rgba(42, 31, 51, 0.5);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 14px;
+    -fx-padding: 14 18 14 18;
 }
 
 .state-dot {
-    -fx-font-size: 18px;
+    -fx-font-size: 20px;
 }
 
 .state-dot.online {
     -fx-text-fill: -fx-color-online;
+    -fx-effect: dropshadow(gaussian, #66BB6A, 12, 0.5, 0, 0);
 }
 
 .state-dot.offline {
     -fx-text-fill: -fx-color-offline;
+    -fx-effect: dropshadow(gaussian, #EF5350, 9, 0.35, 0, 0);
 }
 
-.stat-card {
-    -fx-background-color: -fx-color-surface;
-    -fx-background-radius: 12px;
-    -fx-border-color: -fx-color-border-soft;
-    -fx-border-radius: 12px;
-    -fx-padding: 16 22 16 22;
-    -fx-min-width: 150;
+.state-text {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.state-sub {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-color-text-secondary;
+}
+
+.quick-actions {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.action-status {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 12px;
+}
+
+/* ---- Tarjetas de métrica principales (con barra) ---- */
+.metric-card {
+    -fx-background-color: rgba(58, 43, 71, 0.5);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.07);
+    -fx-border-radius: 14px;
+    -fx-padding: 16 20 18 20;
+    -fx-min-width: 200px;
+    -fx-pref-width: 220px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0.0, 0, 4);
+}
+
+.metric-card:hover {
+    -fx-border-color: rgba(191, 166, 217, 0.45);
+    -fx-effect: dropshadow(gaussian, rgba(110, 76, 143, 0.45), 18, 0.2, 0, 6);
+}
+
+.metric-icon {
+    -fx-text-fill: -fx-color-primary-500;
+    -fx-font-size: 15px;
 }
 
 .stat-caption {
@@ -226,48 +450,242 @@
 
 .stat-value {
     -fx-text-fill: -fx-color-text-primary;
-    -fx-font-size: 22px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
 }
 
-/* ---- Control: consola + botones semánticos ---- */
+.stat-value-sm {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* ---- Barra de nivel (ProgressBar) ---- */
+.metric-bar {
+    -fx-pref-height: 9px;
+    -fx-padding: 0;
+}
+
+.metric-bar > .track {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-radius: 6px;
+    -fx-background-insets: 0;
+}
+
+.metric-bar > .bar {
+    -fx-background-radius: 6px;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.metric-bar.bar-ok > .bar {
+    -fx-background-color: linear-gradient(to right, #43A047, #66BB6A);
+}
+
+.metric-bar.bar-warn > .bar {
+    -fx-background-color: linear-gradient(to right, #F57C00, #FFA726);
+}
+
+.metric-bar.bar-crit > .bar {
+    -fx-background-color: linear-gradient(to right, #E53935, #EF5350);
+}
+
+.metric-bar.bar-accent > .bar {
+    -fx-background-color: linear-gradient(to right, #8E6BAF, #BFA6D9);
+}
+
+/* ---- Tarjetas secundarias ---- */
+.stat-card {
+    -fx-background-color: rgba(42, 31, 51, 0.45);
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-radius: 12px;
+    -fx-padding: 14 18 14 18;
+    -fx-min-width: 130px;
+}
+
+.stat-card:hover {
+    -fx-border-color: rgba(191, 166, 217, 0.35);
+}
+
+/* ========================================================================
+    PANELES DE INFORMACIÓN
+   ======================================================================== */
+
+.info-card {
+    -fx-background-color: rgba(42, 31, 51, 0.5);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 14px;
+    -fx-padding: 16 20 16 20;
+    -fx-min-width: 240px;
+}
+
+.info-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.kv-row {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.kv-key {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 13px;
+}
+
+.kv-val {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Etiquetas de jugadores conectados */
+.player-chip {
+    -fx-background-color: linear-gradient(to bottom right, #8E6BAF, #6E4C8F);
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 12 5 12;
+    -fx-background-radius: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.0, 0, 2);
+}
+
+/* ========================================================================
+    CONSOLA (Control)
+   ======================================================================== */
+
+.console-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
 .console {
     -fx-font-family: "Consolas", "JetBrains Mono", monospace;
-    -fx-font-size: 12px;
+    -fx-font-size: 12.5px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(142, 107, 175, 0.25);
+    -fx-border-radius: 12px;
 }
 
 .console .content {
-    -fx-background-color: -fx-color-bg-deep;
+    -fx-background-color: #0E0A13;
+    -fx-background-radius: 12px;
 }
 
 .console .text {
-    -fx-fill: -fx-color-text-primary;
+    -fx-fill: #D8E6D8;
 }
 
-.status {
+.console-input {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.prompt-mark {
+    -fx-text-fill: -fx-color-primary-500;
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* ========================================================================
+    CAMPOS DE TEXTO
+   ======================================================================== */
+
+.text-field {
+    -fx-background-color: -fx-color-surface-muted;
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-prompt-text-fill: -fx-color-text-secondary;
+    -fx-background-radius: 9px;
+    -fx-border-color: -fx-color-border-soft;
+    -fx-border-radius: 9px;
+    -fx-padding: 9 12 9 12;
+    -fx-highlight-fill: -fx-color-primary-700;
+}
+
+.text-field:focused {
+    -fx-border-color: -fx-color-primary-700;
+    -fx-effect: dropshadow(gaussian, rgba(142, 107, 175, 0.35), 8, 0.2, 0, 0);
+}
+
+/* ========================================================================
+    PLACEHOLDERS (vistas en construcción)
+   ======================================================================== */
+
+.placeholder {
+    -fx-background-color: rgba(42, 31, 51, 0.5);
+    -fx-background-radius: 18px;
+    -fx-border-color: rgba(255, 255, 255, 0.07);
+    -fx-border-radius: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 24, 0.1, 0, 8);
+}
+
+.placeholder-icon {
+    -fx-font-size: 60px;
+    -fx-text-fill: -fx-color-primary-500;
+    -fx-effect: dropshadow(gaussian, rgba(142, 107, 175, 0.5), 18, 0.3, 0, 0);
+}
+
+.placeholder-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.placeholder-badge {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-accent-300;
+    -fx-background-color: rgba(229, 81, 0, 0.18);
+    -fx-background-radius: 10px;
+    -fx-padding: 4 12 4 12;
+}
+
+.placeholder-desc {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+.placeholder-foot {
+    -fx-font-size: 11px;
     -fx-text-fill: -fx-color-text-secondary;
 }
 
-.button.success {
-    -fx-background-color: #43A047;
+.dev-bar {
+    -fx-pref-height: 7px;
+    -fx-padding: 0;
 }
 
-.button.success:hover {
-    -fx-background-color: #4CAF50;
+.dev-bar > .track {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-radius: 6px;
 }
 
-.button.danger {
-    -fx-background-color: -fx-color-offline;
+.dev-bar > .bar {
+    -fx-background-color: linear-gradient(to right, -fx-color-accent-700, -fx-color-accent-300);
+    -fx-background-radius: 6px;
+    -fx-background-insets: 0;
 }
 
-.button.danger:hover {
-    -fx-background-color: #F44336;
+/* ========================================================================
+    DIÁLOGOS (broadcast, etc.)
+   ======================================================================== */
+
+.dialog-pane {
+    -fx-background-color: -fx-color-bg-secondary;
 }
 
-.button.accent {
-    -fx-background-color: -fx-color-accent-700;
+.dialog-pane > .content,
+.dialog-pane .label {
+    -fx-text-fill: -fx-color-text-primary;
 }
 
-.button.accent:hover {
-    -fx-background-color: -fx-color-accent-500;
+.dialog-pane .header-panel {
+    -fx-background-color: -fx-color-bg-deep;
 }

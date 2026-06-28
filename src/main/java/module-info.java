@@ -5,11 +5,13 @@
 module io.github.dinamo541.servermanagermc {
 
     // --- JavaFX ---
-    requires javafx.controls;
+    requires transitive javafx.controls;
     requires javafx.fxml;
 
     // --- Librería propia del desarrollador (navegación, theming, utilidades) ---
     requires io.github.dinamo541.corefx;
+    requires javafx.graphics;
+    requires javafx.base;
 
     // NOTA: el theming se hace con DarkThemeStyle.css (paleta propia). AtlantaFX y
     // MaterialFX están en el pom; se añadirán con `requires atlantafx.base;` /

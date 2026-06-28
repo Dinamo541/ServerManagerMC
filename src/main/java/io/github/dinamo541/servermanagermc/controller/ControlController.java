@@ -4,6 +4,7 @@ import io.github.dinamo541.corefx.navigation.StageManager;
 import io.github.dinamo541.corefx.util.Answer;
 import io.github.dinamo541.servermanagermc.concurrent.AsyncExecutor;
 import io.github.dinamo541.servermanagermc.config.Services;
+import io.github.dinamo541.servermanagermc.util.AnimationUtil;
 import java.util.function.Supplier;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,16 +23,24 @@ public class ControlController {
     private TextField commandField;
     @FXML
     private Label statusLabel;
+    @FXML
+    private Label liveDot;
 
     private boolean tailStarted;
 
     @FXML
     private void initialize() {
+        AnimationUtil.pulse(liveDot);
         if (!tailStarted) {
             tailStarted = true;
             Services.console().startTail(line ->
                     StageManager.getInstance().runOnFxThread(() -> console.appendText(line + "\n")));
         }
+    }
+
+    @FXML
+    private void onClear() {
+        console.clear();
     }
 
     @FXML
