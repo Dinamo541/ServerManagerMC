@@ -13,6 +13,9 @@ module io.github.dinamo541.servermanagermc {
     requires javafx.graphics;
     requires javafx.base;
 
+    // --- Parseo de los *.json del servidor (whitelist/ops/banned) ---
+    requires com.google.gson;
+
     // NOTA: el theming se hace con DarkThemeStyle.css (paleta propia). AtlantaFX y
     // MaterialFX están en el pom; se añadirán con `requires atlantafx.base;` /
     // `requires MaterialFX;` cuando se usen sus componentes (Etapa 7 — pulido).

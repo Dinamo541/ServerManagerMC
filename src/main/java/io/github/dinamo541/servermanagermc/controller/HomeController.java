@@ -6,6 +6,7 @@ import io.github.dinamo541.servermanagermc.config.AppProfile;
 import io.github.dinamo541.servermanagermc.config.Services;
 import io.github.dinamo541.servermanagermc.model.ServerStatus;
 import io.github.dinamo541.servermanagermc.util.AnimationUtil;
+import io.github.dinamo541.servermanagermc.util.Nav;
 import java.util.List;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -44,6 +45,18 @@ public class HomeController {
 
     private final FlowController flow = FlowController.getInstance();
     private List<Button> navButtons;
+
+    /** Acceso al shell ya cargado (FlowController cachea el loader de HomeView). */
+    public static HomeController getInstance() {
+        return FlowController.getInstance().getController("HomeView");
+    }
+
+    /** Navega a Jugadores con un jugador preseleccionado (chips del Dashboard/Consola). */
+    public void navigateToPlayers(String playerName) {
+        Nav.selectPlayer(playerName);
+        setActive(navPlayers);
+        show("Players");
+    }
 
     @FXML
     private void initialize() {

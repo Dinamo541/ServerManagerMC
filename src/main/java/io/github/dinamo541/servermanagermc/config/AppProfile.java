@@ -10,7 +10,8 @@ package io.github.dinamo541.servermanagermc.config;
  * presente; si no, se autodetecta por el sistema operativo (Windows → DEV).
  */
 public enum AppProfile {
-    DEV, PROD;
+    DEV,
+    PROD;
 
     private static volatile AppProfile current;
 

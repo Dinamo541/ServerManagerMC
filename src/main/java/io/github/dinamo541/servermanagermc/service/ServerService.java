@@ -45,6 +45,18 @@ public final class ServerService {
         return action("restart", "Servidor reiniciado.");
     }
 
+    /**
+     * Detención forzada (Opción A): manda {@code systemctl kill} al servicio,
+     * que envía SIGKILL al proceso. Útil cuando el servidor no responde a un
+     * stop normal; puede perder datos no guardados (de ahí la confirmación en la UI).
+     */
+    public Answer kill() {
+        CommandResult r = runner.run("sudo systemctl kill " + ServerPaths.SERVICE);
+        return r.ok()
+                ? Answer.success("Servidor forzado a detenerse.")
+                : Answer.failure("No se pudo forzar la detención.", r.trimmed());
+    }
+
     private Answer action(String verb, String okMessage) {
         CommandResult r = runner.run("sudo systemctl " + verb + " " + ServerPaths.SERVICE);
         return r.ok()

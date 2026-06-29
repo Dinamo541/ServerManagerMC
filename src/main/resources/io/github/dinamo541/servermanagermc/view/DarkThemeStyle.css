@@ -689,3 +689,356 @@
 .dialog-pane .header-panel {
     -fx-background-color: -fx-color-bg-deep;
 }
+
+/* ========================================================================
+    CONTROL — panel, consola coloreada, autocompletado, métricas
+   ======================================================================== */
+
+/* ---- Dot de transición (INICIANDO/DETENIENDO) ---- */
+.state-dot.pending {
+    -fx-text-fill: -fx-color-warn;
+    -fx-effect: dropshadow(gaussian, #FFA726, 12, 0.5, 0, 0);
+}
+
+/* ---- Botón de detención forzada ---- */
+.button.kill {
+    -fx-background-color: linear-gradient(to bottom, #B71C1C, #8E1414);
+}
+
+.button.kill:hover {
+    -fx-background-color: linear-gradient(to bottom, #C62828, #B71C1C);
+    -fx-effect: dropshadow(gaussian, rgba(183, 28, 28, 0.6), 12, 0.2, 0, 3);
+}
+
+/* ---- Spinner de acción en curso ---- */
+.action-spinner {
+    -fx-progress-color: -fx-color-accent-500;
+}
+
+.action-spinner .percentage {
+    -fx-fill: transparent;
+}
+
+/* ---- Feedback de error en la barra de estado ---- */
+.action-error {
+    -fx-text-fill: -fx-color-offline;
+}
+
+/* ---- Consola como lista de líneas coloreadas ---- */
+.console-list {
+    -fx-background-color: #0E0A13;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(142, 107, 175, 0.25);
+    -fx-border-radius: 12px;
+    -fx-padding: 4;
+}
+
+.console-list:focused {
+    -fx-background-color: #0E0A13;
+    -fx-border-color: rgba(142, 107, 175, 0.35);
+}
+
+.console-list > .virtual-flow > .corner {
+    -fx-background-color: transparent;
+}
+
+.console-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-font-family: "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 12.5px;
+    -fx-padding: 1 8 1 8;
+}
+
+.console-list .list-cell:filled:hover {
+    -fx-background-color: rgba(142, 107, 175, 0.10);
+}
+
+.console-list .list-cell:filled:selected {
+    -fx-background-color: rgba(142, 107, 175, 0.18);
+}
+
+/* Color por nivel de log (cada celda llena recibe siempre una de estas). */
+.line-info  { -fx-text-fill: #BFE6BF; }
+.line-warn  { -fx-text-fill: #FFD27A; }
+.line-error { -fx-text-fill: #FF8A80; }
+.line-debug { -fx-text-fill: #8C9AA8; }
+
+/* ---- Chips de comando rápido ---- */
+.chip-btn {
+    -fx-background-color: rgba(58, 43, 71, 0.7);
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-padding: 5 12 5 12;
+    -fx-background-radius: 14px;
+    -fx-cursor: hand;
+}
+
+.chip-btn:hover {
+    -fx-background-color: -fx-color-surface-hover;
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-effect: null;
+}
+
+/* ---- Menú de autocompletado ---- */
+.context-menu.suggest-menu {
+    -fx-background-color: #2A1F33;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(142, 107, 175, 0.35);
+    -fx-border-radius: 8;
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 14, 0.1, 0, 6);
+}
+
+.context-menu.suggest-menu .menu-item {
+    -fx-background-radius: 6;
+    -fx-padding: 5 12 5 12;
+}
+
+.context-menu.suggest-menu .menu-item:focused {
+    -fx-background-color: rgba(142, 107, 175, 0.3);
+}
+
+.context-menu.suggest-menu .menu-item .label {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 12px;
+}
+
+/* ---- CheckBox (auto-scroll) ---- */
+.check-box {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 12px;
+}
+
+.check-box .box {
+    -fx-background-color: -fx-color-surface-muted;
+    -fx-background-radius: 4;
+    -fx-border-color: -fx-color-border-base;
+    -fx-border-radius: 4;
+    -fx-padding: 3;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -fx-color-primary-700;
+    -fx-border-color: -fx-color-primary-700;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+/* ---- ComboBox (dificultad) ---- */
+.combo-box {
+    -fx-background-color: -fx-color-surface-muted;
+    -fx-background-radius: 8;
+    -fx-border-color: -fx-color-border-soft;
+    -fx-border-radius: 8;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-padding: 4 8 4 8;
+}
+
+.combo-box .arrow {
+    -fx-background-color: -fx-color-text-secondary;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #2A1F33;
+    -fx-border-color: rgba(142, 107, 175, 0.3);
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: -fx-color-surface-hover;
+}
+
+/* ========================================================================
+    JUGADORES — pestañas de categoría, lista, fila, ficha, badges
+   ======================================================================== */
+
+/* ---- Pestañas de categoría (Conectados / Whitelist / Operadores / Baneados) ---- */
+.category-tabs {
+    -fx-padding: 0 0 2 0;
+}
+
+.tab-btn {
+    -fx-background-color: rgba(58, 43, 71, 0.7);
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-padding: 6 14 6 14;
+    -fx-background-radius: 14px;
+    -fx-cursor: hand;
+}
+
+.tab-btn:hover {
+    -fx-background-color: -fx-color-surface-hover;
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-effect: null;
+}
+
+.tab-btn.active {
+    -fx-background-color: linear-gradient(to bottom right, #8E6BAF, #6E4C8F);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(110, 76, 143, 0.5), 8, 0.2, 0, 2);
+}
+
+/* ---- Lista de jugadores ---- */
+.player-list {
+    -fx-padding: 2 4 2 0;
+}
+
+.player-row {
+    -fx-background-color: rgba(58, 43, 71, 0.35);
+    -fx-background-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10px;
+    -fx-border-width: 0 0 0 3;
+    -fx-padding: 9 12 9 12;
+}
+
+.player-row:hover {
+    -fx-background-color: rgba(74, 54, 91, 0.6);
+    -fx-border-color: transparent transparent transparent rgba(191, 166, 217, 0.5);
+}
+
+.player-row.selected {
+    -fx-background-color: rgba(142, 107, 175, 0.28);
+    -fx-border-color: transparent transparent transparent -fx-color-accent-500;
+}
+
+.player-row-banned {
+    -fx-background-color: rgba(239, 83, 80, 0.12);
+}
+
+.player-row-name {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.player-status-dot {
+    -fx-font-size: 11px;
+}
+
+.player-status-dot.online {
+    -fx-text-fill: -fx-color-online;
+    -fx-effect: dropshadow(gaussian, #66BB6A, 8, 0.4, 0, 0);
+}
+
+.player-status-dot.offline {
+    -fx-text-fill: rgba(197, 184, 214, 0.45);
+}
+
+/* ---- Ficha del jugador (panel derecho) ---- */
+.detail-card {
+    -fx-background-color: rgba(42, 31, 51, 0.6);
+    -fx-background-radius: 16px;
+    -fx-border-color: rgba(255, 255, 255, 0.07);
+    -fx-border-radius: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 18, 0.1, 0, 6);
+}
+
+.player-avatar {
+    -fx-min-width: 46px;
+    -fx-min-height: 46px;
+    -fx-pref-width: 46px;
+    -fx-pref-height: 46px;
+    -fx-max-width: 46px;
+    -fx-max-height: 46px;
+    -fx-alignment: center;
+    -fx-background-color: linear-gradient(to bottom right, #8E6BAF, #6E4C8F);
+    -fx-background-radius: 23px;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(110, 76, 143, 0.55), 12, 0.3, 0, 2);
+}
+
+.detail-name {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.detail-uuid {
+    -fx-font-size: 11px;
+    -fx-font-family: "Consolas", "JetBrains Mono", monospace;
+    -fx-text-fill: -fx-color-text-secondary;
+}
+
+.detail-summary {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-padding: 3 0 0 0;
+}
+
+/* Botón cerrar (X) de la ficha, arriba a la derecha */
+.detail-close {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-min-width: 30px;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.detail-close:hover {
+    -fx-background-color: rgba(239, 83, 80, 0.22);
+    -fx-text-fill: #FF8A80;
+    -fx-effect: null;
+}
+
+.detail-section {
+    -fx-background-color: rgba(20, 15, 26, 0.35);
+    -fx-background-radius: 10px;
+    -fx-padding: 10 14 10 14;
+}
+
+.detail-section-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-primary-500;
+    -fx-padding: 4 0 0 2;
+}
+
+/* ---- Badges ---- */
+.badge {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 9 3 9;
+    -fx-background-radius: 9px;
+    -fx-text-fill: white;
+}
+
+.badge-op {
+    -fx-background-color: linear-gradient(to bottom, #F57C00, #EF6C00);
+}
+
+.badge-whitelisted {
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #43A047);
+}
+
+.badge-banned {
+    -fx-background-color: linear-gradient(to bottom, #EF5350, #E53935);
+}
+
+.badge-online {
+    -fx-background-color: rgba(102, 187, 106, 0.22);
+    -fx-text-fill: #9BE39E;
+    -fx-effect: dropshadow(gaussian, rgba(102, 187, 106, 0.5), 8, 0.3, 0, 0);
+}
+
+/* ---- Caja de motivo (kick/ban) inline ---- */
+.reason-box {
+    -fx-background-color: rgba(239, 83, 80, 0.1);
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(239, 83, 80, 0.35);
+    -fx-border-radius: 10px;
+}

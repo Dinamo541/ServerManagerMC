@@ -1,6 +1,7 @@
 package io.github.dinamo541.servermanagermc.config;
 
 import io.github.dinamo541.servermanagermc.service.ConsoleService;
+import io.github.dinamo541.servermanagermc.service.PlayerService;
 import io.github.dinamo541.servermanagermc.service.ServerService;
 import io.github.dinamo541.servermanagermc.service.command.CommandRunner;
 import io.github.dinamo541.servermanagermc.service.command.LinuxCommandRunner;
@@ -19,6 +20,7 @@ public final class Services {
     private static CommandRunner runner;
     private static ServerService server;
     private static ConsoleService console;
+    private static PlayerService players;
 
     private Services() {
     }
@@ -44,5 +46,12 @@ public final class Services {
             console = new ConsoleService(runner());
         }
         return console;
+    }
+
+    public static synchronized PlayerService players() {
+        if (players == null) {
+            players = new PlayerService(runner());
+        }
+        return players;
     }
 }

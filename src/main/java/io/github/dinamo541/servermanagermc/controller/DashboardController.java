@@ -12,6 +12,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -189,7 +190,17 @@ public class DashboardController {
         for (String name : names) {
             Label chip = new Label(name);
             chip.getStyleClass().add("player-chip");
+            chip.setCursor(Cursor.HAND);
+            chip.setOnMouseClicked(e -> navigateToPlayer(name));
             playerChips.getChildren().add(chip);
+        }
+    }
+
+    /** Abre la vista Jugadores con este jugador ya seleccionado. */
+    private void navigateToPlayer(String name) {
+        HomeController home = HomeController.getInstance();
+        if (home != null) {
+            home.navigateToPlayers(name);
         }
     }
 

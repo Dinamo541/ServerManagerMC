@@ -65,6 +65,29 @@ public final class AnimationUtil {
         }
     }
 
+    /**
+     * Entrada lateral desde la derecha + fundido. Pensada para paneles que
+     * aparecen al costado (p. ej. la ficha de jugador al seleccionarlo).
+     */
+    public static void slideInRight(Node node) {
+        if (node == null) {
+            return;
+        }
+        node.setOpacity(0);
+        node.setTranslateX(28);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(220), node);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+
+        TranslateTransition slide = new TranslateTransition(Duration.millis(220), node);
+        slide.setFromX(28);
+        slide.setToX(0);
+        slide.setInterpolator(Interpolator.EASE_OUT);
+
+        new ParallelTransition(node, fade, slide).play();
+    }
+
     /** Pulso infinito (latido) para el indicador de estado online. */
     public static FadeTransition pulse(Node node) {
         FadeTransition pulse = new FadeTransition(Duration.millis(900), node);

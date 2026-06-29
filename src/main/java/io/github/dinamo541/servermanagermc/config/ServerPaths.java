@@ -22,6 +22,7 @@ public final class ServerPaths {
     public static final String WHITELIST   = SERVER + "/whitelist.json";
     public static final String OPS         = SERVER + "/ops.json";
     public static final String BANNED      = SERVER + "/banned-players.json";
+    public static final String USERCACHE   = SERVER + "/usercache.json"; // jugadores que ya entraron
 
     public static final String BACKUPS     = BASE + "/backups";
     public static final String BACKUP_SH   = BASE + "/backup.sh";

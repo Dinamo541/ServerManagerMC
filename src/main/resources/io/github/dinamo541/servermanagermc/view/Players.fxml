@@ -1,23 +1,197 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="io.github.dinamo541.servermanagermc.controller.PlayersController"
-      alignment="CENTER" styleClass="content">
-    <VBox alignment="CENTER" maxWidth="520.0" spacing="14.0" styleClass="placeholder">
-        <padding>
-            <Insets bottom="36.0" left="40.0" right="40.0" top="36.0"/>
-        </padding>
-        <Label styleClass="placeholder-icon" text="☺"/>
-        <Label styleClass="placeholder-title" text="Jugadores"/>
-        <Label styleClass="placeholder-badge" text="PRÓXIMAMENTE · ETAPA 2"/>
-        <Label styleClass="placeholder-desc" wrapText="true"
-               text="Whitelist, operadores y moderación (kick/ban) desde el panel, con validación de nombres."/>
-        <ProgressBar maxWidth="Infinity" progress="0.15" styleClass="dev-bar"/>
-        <Label styleClass="placeholder-foot" text="15 % planificado"/>
-    </VBox>
+      fx:id="rootBox" spacing="16.0" styleClass="content">
+    <padding>
+        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
+    </padding>
+
+    <!-- ===== Cabecera: titulo + buscador + anadir ===== -->
+    <HBox alignment="CENTER_LEFT" spacing="12.0">
+        <Label styleClass="title" text="Jugadores"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="searchField" prefWidth="240.0" promptText="Buscar jugador..."/>
+        <Button fx:id="addBtn" onAction="#onAddToWhitelist" styleClass="accent" text="+  Anadir"/>
+    </HBox>
+
+    <!-- ===== Resumen general (totales del servidor) ===== -->
+    <FlowPane fx:id="summaryRow" hgap="12.0" vgap="12.0">
+        <VBox styleClass="stat-card">
+            <Label fx:id="statTotal" styleClass="stat-value" text="-"/>
+            <Label styleClass="stat-caption" text="Registrados"/>
+        </VBox>
+        <VBox styleClass="stat-card">
+            <Label fx:id="statOnline" styleClass="stat-value" text="-"/>
+            <Label styleClass="stat-caption" text="Conectados"/>
+        </VBox>
+        <VBox styleClass="stat-card">
+            <Label fx:id="statWhitelist" styleClass="stat-value" text="-"/>
+            <Label styleClass="stat-caption" text="En whitelist"/>
+        </VBox>
+        <VBox styleClass="stat-card">
+            <Label fx:id="statOps" styleClass="stat-value" text="-"/>
+            <Label styleClass="stat-caption" text="Operadores"/>
+        </VBox>
+        <VBox styleClass="stat-card">
+            <Label fx:id="statBanned" styleClass="stat-value" text="-"/>
+            <Label styleClass="stat-caption" text="Baneados"/>
+        </VBox>
+        <VBox styleClass="stat-card">
+            <Label fx:id="statHistory" styleClass="stat-value" text="-"/>
+            <Label styleClass="stat-caption" text="Visitantes"/>
+        </VBox>
+    </FlowPane>
+
+    <!-- ===== Cuerpo: lista (izquierda) + ficha (derecha) ===== -->
+    <HBox spacing="16.0" VBox.vgrow="ALWAYS">
+
+        <!-- == IZQUIERDA: pestanas de categoria + lista == -->
+        <VBox spacing="12.0" styleClass="info-card" minWidth="360.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="category-tabs">
+                <Button fx:id="tabOnline" onAction="#onTabOnline" styleClass="tab-btn" text="Conectados"/>
+                <Button fx:id="tabWhitelist" onAction="#onTabWhitelist" styleClass="tab-btn" text="Whitelist"/>
+                <Button fx:id="tabOps" onAction="#onTabOps" styleClass="tab-btn" text="Operadores"/>
+                <Button fx:id="tabBanned" onAction="#onTabBanned" styleClass="tab-btn" text="Baneados"/>
+                <Button fx:id="tabHistory" onAction="#onTabHistory" styleClass="tab-btn" text="Historial"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="countLabel" styleClass="muted" text="0"/>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+                <VBox fx:id="playerList" spacing="6.0" styleClass="player-list"/>
+            </ScrollPane>
+        </VBox>
+
+        <!-- == DERECHA: ficha del jugador seleccionado == -->
+        <ScrollPane fx:id="rightPane" fitToWidth="true" hbarPolicy="NEVER" managed="false"
+                    maxWidth="440.0" minWidth="360.0" prefWidth="392.0" styleClass="content-scroll"
+                    visible="false">
+            <VBox fx:id="detailPanel" spacing="14.0" styleClass="detail-card">
+                <padding>
+                    <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                </padding>
+
+                <!-- Identidad -->
+                <HBox alignment="TOP_LEFT" spacing="14.0">
+                    <Label fx:id="detailAvatar" styleClass="player-avatar" text="?"/>
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="detailName" styleClass="detail-name" text="-"/>
+                        <Label fx:id="detailUuid" styleClass="detail-uuid" text="-"/>
+                        <Label fx:id="detailSummary" styleClass="detail-summary" text="" wrapText="true"/>
+                    </VBox>
+                    <Button onAction="#onCloseDetail" styleClass="detail-close" text="✕"/>
+                </HBox>
+
+                <FlowPane fx:id="detailBadges" hgap="6.0" vgap="6.0"/>
+
+                <!-- Sancion (solo si esta baneado) -->
+                <Label fx:id="banSectionTitle" managed="false" styleClass="detail-section-title"
+                       text="Sancion" visible="false"/>
+                <VBox fx:id="banSection" managed="false" spacing="6.0" styleClass="detail-section"
+                      visible="false"/>
+
+                <!-- Acciones (primero, para tenerlas a mano) -->
+                <Label styleClass="detail-section-title" text="Acciones"/>
+                <VBox spacing="8.0">
+                    <HBox spacing="8.0">
+                        <Button fx:id="opBtn" maxWidth="Infinity" onAction="#onToggleOp"
+                                styleClass="accent" text="Dar OP" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="whitelistBtn" maxWidth="Infinity" onAction="#onToggleWhitelist"
+                                styleClass="ghost" text="Whitelist" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <HBox spacing="8.0">
+                        <Button fx:id="kickBtn" maxWidth="Infinity" onAction="#onKick"
+                                styleClass="ghost" text="Expulsar" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="banBtn" maxWidth="Infinity" onAction="#onBan"
+                                styleClass="danger" text="Banear" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <!-- Caja de motivo (kick/ban), inline, oculta por defecto -->
+                    <VBox fx:id="reasonBox" managed="false" spacing="8.0" styleClass="reason-box" visible="false">
+                        <padding>
+                            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                        </padding>
+                        <Label fx:id="reasonTitle" styleClass="muted" text="Motivo:"/>
+                        <TextField fx:id="reasonField" promptText="Motivo (opcional)..."/>
+                        <HBox spacing="8.0">
+                            <Button fx:id="reasonConfirm" maxWidth="Infinity" onAction="#onConfirmAction"
+                                    styleClass="danger" text="Confirmar" HBox.hgrow="ALWAYS"/>
+                            <Button maxWidth="Infinity" onAction="#onCancelAction"
+                                    styleClass="ghost" text="Cancelar" HBox.hgrow="ALWAYS"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Acciones que requieren al jugador conectado -->
+                    <Label styleClass="muted" text="Avanzado (jugador conectado)"/>
+                    <VBox fx:id="liveBox" spacing="8.0">
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <Label styleClass="muted" text="Modo:"/>
+                            <ComboBox fx:id="gamemodeCombo" prefWidth="150.0"/>
+                            <Button onAction="#onApplyGamemode" styleClass="ghost" text="Aplicar"/>
+                        </HBox>
+                        <FlowPane hgap="6.0" vgap="6.0">
+                            <Button onAction="#onGrantAdv" styleClass="chip-btn" text="Otorgar logros"/>
+                            <Button onAction="#onRevokeAdv" styleClass="chip-btn" text="Quitar logros"/>
+                            <Button onAction="#onGiveXp" styleClass="chip-btn" text="Dar XP (+10 niv)"/>
+                            <Button onAction="#onHeal" styleClass="chip-btn" text="Curar"/>
+                            <Button onAction="#onFeed" styleClass="chip-btn" text="Alimentar"/>
+                            <Button onAction="#onKillPlayer" styleClass="chip-btn" text="Matar"/>
+                            <Button onAction="#onClearInv" styleClass="chip-btn" text="Vaciar inventario"/>
+                        </FlowPane>
+                    </VBox>
+                    <FlowPane hgap="6.0" vgap="6.0">
+                        <Button onAction="#onResetStats" styleClass="chip-btn" text="Reiniciar estadisticas"/>
+                    </FlowPane>
+
+                    <Label fx:id="actionStatus" styleClass="action-status" wrapText="true"/>
+                </VBox>
+
+                <!-- Informacion -->
+                <Label styleClass="detail-section-title" text="Informacion"/>
+                <VBox fx:id="infoBox" spacing="6.0" styleClass="detail-section"/>
+
+                <!-- Estadisticas -->
+                <Label styleClass="detail-section-title" text="Estadisticas"/>
+                <VBox fx:id="statsBox" spacing="6.0" styleClass="detail-section"/>
+            </VBox>
+        </ScrollPane>
+
+        <!-- == DERECHA (alternativo): anadir jugador por nombre == -->
+        <ScrollPane fx:id="addPane" fitToWidth="true" hbarPolicy="NEVER" managed="false"
+                    maxWidth="440.0" minWidth="360.0" prefWidth="392.0" styleClass="content-scroll"
+                    visible="false">
+            <VBox fx:id="addPanel" spacing="14.0" styleClass="detail-card">
+                <padding>
+                    <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                </padding>
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label styleClass="detail-name" text="Anadir jugador"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button onAction="#onCloseAdd" styleClass="detail-close" text="✕"/>
+                </HBox>
+                <Label styleClass="muted" wrapText="true"
+                       text="Agrega a cualquiera por su nombre, aunque nunca haya entrado al servidor (por ejemplo, el nick de un amigo)."/>
+                <TextField fx:id="addNameField" promptText="Nombre del jugador..."/>
+                <Button maxWidth="Infinity" onAction="#onAddWhitelistByName" styleClass="success"
+                        text="Anadir a whitelist"/>
+                <Button maxWidth="Infinity" onAction="#onAddOpByName" styleClass="accent"
+                        text="Hacer operador"/>
+                <Button maxWidth="Infinity" onAction="#onAddBanByName" styleClass="danger"
+                        text="Banear por nombre"/>
+                <Label fx:id="addStatus" styleClass="action-status" wrapText="true"/>
+            </VBox>
+        </ScrollPane>
+    </HBox>
 </VBox>
