@@ -58,6 +58,54 @@ public final class PlayerService {
         return parseArray(readList("mc:known-json", ServerPaths.USERCACHE), Ctx.KNOWN);
     }
 
+    /**
+     * Jugadores con advertencia activa (concepto del panel, no de Minecraft).
+     * Se guardan en {@link ServerPaths#WARNINGS} (un nombre por línea). Devuelve
+     * los nombres en minúscula para comparación directa.
+     */
+    public java.util.Set<String> warnedPlayers() {
+        String out = runner.isMock()
+                ? runner.run("mc:warnings").output()
+                : runner.run("cat \"" + ServerPaths.WARNINGS + "\" 2>/dev/null").output();
+        java.util.Set<String> set = new java.util.HashSet<>();
+        if (out != null) {
+            for (String line : out.split("\\r?\\n")) {
+                String n = line.trim();
+                if (!n.isEmpty()) {
+                    set.add(n.toLowerCase(Locale.ROOT));
+                }
+            }
+        }
+        return set;
+    }
+
+    public Answer addWarning(String name) {
+        if (name == null || !NAME_OK.matcher(name).matches()) {
+            return Answer.failure("Nombre de jugador no válido.");
+        }
+        CommandResult r = runner.isMock()
+                ? runner.run("mc:warn-add " + name)
+                : runner.run("grep -qxF \"" + name + "\" \"" + ServerPaths.WARNINGS + "\" 2>/dev/null"
+                        + " || echo \"" + name + "\" >> \"" + ServerPaths.WARNINGS + "\"");
+        return r.ok()
+                ? Answer.success("Advertencia añadida a " + name)
+                : Answer.failure("No se pudo añadir la advertencia.", r.trimmed());
+    }
+
+    public Answer removeWarning(String name) {
+        if (name == null || !NAME_OK.matcher(name).matches()) {
+            return Answer.failure("Nombre de jugador no válido.");
+        }
+        CommandResult r = runner.isMock()
+                ? runner.run("mc:warn-remove " + name)
+                : runner.run("[ -f \"" + ServerPaths.WARNINGS + "\" ] && grep -vxF \"" + name + "\" \""
+                        + ServerPaths.WARNINGS + "\" > \"" + ServerPaths.WARNINGS + ".tmp\" && mv \""
+                        + ServerPaths.WARNINGS + ".tmp\" \"" + ServerPaths.WARNINGS + "\"");
+        return r.ok()
+                ? Answer.success("Advertencia retirada a " + name)
+                : Answer.failure("No se pudo retirar la advertencia.", r.trimmed());
+    }
+
     /** Nombres conectados, parseados de la salida del comando {@code list}. */
     public List<String> onlinePlayers() {
         String out = runner.run("mc:list").output();

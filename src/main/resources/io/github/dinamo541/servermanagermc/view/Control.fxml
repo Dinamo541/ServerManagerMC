@@ -10,40 +10,67 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" styleClass="content-scroll"
-            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="io.github.dinamo541.servermanagermc.controller.ControlController">
+<ScrollPane fitToHeight="true" fitToWidth="true" styleClass="content-scroll" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="io.github.dinamo541.servermanagermc.controller.ControlController">
     <VBox fx:id="rootBox" spacing="16.0" styleClass="content">
         <padding>
-            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
         </padding>
 
         <!-- ============================ HERO DE ESTADO ============================ -->
         <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="state-hero">
-            <Label fx:id="heroDot" styleClass="state-dot" text="●"/>
+            <Label fx:id="heroDot" styleClass="state-dot" text="●" />
             <VBox spacing="2.0">
-                <Label fx:id="heroState" styleClass="state-text" text="—"/>
-                <Label fx:id="heroSub" styleClass="state-sub" text="Cargando estado…"/>
+                <Label fx:id="heroState" styleClass="state-text" text="—" />
+                <Label fx:id="heroSub" styleClass="state-sub" text="Cargando estado…" />
             </VBox>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Label fx:id="profileBadge" styleClass="profile-badge" text="—"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="profileBadge" styleClass="profile-badge" text="—" />
         </HBox>
 
         <!-- ============================ PANEL DE CONTROL ========================== -->
         <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="quick-actions">
-            <Button fx:id="startBtn" onAction="#onStart" prefWidth="130.0" styleClass="success" text="▶  Iniciar"/>
-            <Button fx:id="restartBtn" onAction="#onRestart" prefWidth="130.0" styleClass="accent" text="⟳  Reiniciar"/>
-            <Button fx:id="stopBtn" onAction="#onStop" prefWidth="130.0" styleClass="danger" text="■  Detener"/>
-            <Button fx:id="killBtn" onAction="#onKill" prefWidth="120.0" styleClass="kill" text="✕  Forzar"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <ProgressIndicator fx:id="actionSpinner" managed="false" maxHeight="18.0" maxWidth="18.0"
-                               prefHeight="18.0" prefWidth="18.0" styleClass="action-spinner" visible="false"/>
-            <Label fx:id="statusLabel" styleClass="action-status" text=""/>
+            <Button fx:id="startBtn" onAction="#onStart" prefWidth="130.0" styleClass="success" text="Iniciar">
+            <graphic>
+               <ImageView fitHeight="29.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/power.png" />
+                  </image>
+               </ImageView>
+            </graphic></Button>
+            <Button fx:id="restartBtn" onAction="#onRestart" prefWidth="130.0" styleClass="accent" text="Reiniciar">
+            <graphic>
+               <ImageView fitHeight="29.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/rotate-cw.png" />
+                  </image>
+               </ImageView>
+            </graphic></Button>
+            <Button fx:id="stopBtn" onAction="#onStop" prefWidth="130.0" styleClass="danger" text="Detener">
+            <graphic>
+               <ImageView fitHeight="29.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/pause.png" />
+                  </image>
+               </ImageView>
+            </graphic></Button>
+            <Button fx:id="killBtn" onAction="#onKill" prefWidth="120.0" styleClass="kill" text="Forzar">
+            <graphic>
+               <ImageView fitHeight="29.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/x.png" />
+                  </image>
+               </ImageView>
+            </graphic></Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <ProgressIndicator fx:id="actionSpinner" managed="false" maxHeight="18.0" maxWidth="18.0" prefHeight="18.0" prefWidth="18.0" styleClass="action-spinner" visible="false" />
+            <Label fx:id="statusLabel" styleClass="action-status" text="" />
         </HBox>
 
         <!-- ===================== ZONA MEDIA: DOS COLUMNAS ======================== -->
@@ -52,29 +79,29 @@
             <!-- ===== IZQUIERDA: CONSOLA EN VIVO ===== -->
             <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="console-head">
-                    <Label fx:id="liveDot" styleClass="state-dot" text="●"/>
-                    <Label styleClass="console-title" text="Consola en vivo"/>
-                    <Label styleClass="muted" text="latest.log"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="lineCountLabel" styleClass="muted" text="0 líneas"/>
-                    <CheckBox fx:id="autoScrollCheck" selected="true" text="Auto-scroll"/>
-                    <Button onAction="#onCopy" styleClass="ghost" text="Copiar"/>
-                    <Button onAction="#onClear" styleClass="ghost" text="Limpiar"/>
+                    <Label fx:id="liveDot" styleClass="state-dot" text="●" />
+                    <Label styleClass="console-title" text="Consola en vivo" />
+                    <Label styleClass="muted" text="latest.log" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lineCountLabel" styleClass="muted" text="0 líneas" />
+                    <CheckBox fx:id="autoScrollCheck" selected="true" text="Auto-scroll" />
+                    <Button onAction="#onCopy" styleClass="ghost" text="Copiar" />
+                    <Button onAction="#onClear" styleClass="ghost" text="Limpiar" />
                 </HBox>
 
-                <ListView fx:id="console" styleClass="console-list" VBox.vgrow="ALWAYS"/>
+                <ListView fx:id="console" styleClass="console-list" VBox.vgrow="ALWAYS" />
 
                 <FlowPane hgap="8.0" styleClass="quick-commands" vgap="8.0">
-                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="save-all" userData="save-all"/>
-                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="list" userData="list"/>
-                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="say Hola" userData="say Hola a todos"/>
-                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="tps" userData="tps"/>
+                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="save-all" userData="save-all" />
+                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="list" userData="list" />
+                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="say Hola" userData="say Hola a todos" />
+                    <Button onAction="#onQuickCommand" styleClass="chip-btn" text="tps" userData="tps" />
                 </FlowPane>
 
                 <HBox spacing="10.0" styleClass="console-input">
-                    <Label styleClass="prompt-mark" text="❯"/>
-                    <TextField fx:id="commandField" onAction="#onSend" promptText="Escribe un comando (list, say…, save-all)…" HBox.hgrow="ALWAYS"/>
-                    <Button onAction="#onSend" prefWidth="110.0" text="Enviar  ➤"/>
+                    <Label styleClass="prompt-mark" text="❯" />
+                    <TextField fx:id="commandField" onAction="#onSend" promptText="Escribe un comando (list, say…, save-all)…" HBox.hgrow="ALWAYS" />
+                    <Button onAction="#onSend" prefWidth="110.0" text="Enviar  ➤" />
                 </HBox>
             </VBox>
 
@@ -83,57 +110,78 @@
 
                 <!-- Métricas en vivo -->
                 <VBox spacing="14.0" styleClass="info-card">
-                    <Label styleClass="info-title" text="Métricas en vivo"/>
+                    <Label styleClass="info-title" text="Métricas en vivo" />
                     <VBox spacing="5.0">
                         <HBox alignment="CENTER_LEFT">
-                            <Label styleClass="stat-caption" text="RAM"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label fx:id="ramLabel" styleClass="stat-value-sm" text="—"/>
+                            <Label styleClass="stat-caption" text="RAM" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="ramLabel" styleClass="stat-value-sm" text="—" />
                         </HBox>
-                        <ProgressBar fx:id="ramBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar"/>
+                        <ProgressBar fx:id="ramBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar" />
                     </VBox>
                     <VBox spacing="5.0">
                         <HBox alignment="CENTER_LEFT">
-                            <Label styleClass="stat-caption" text="CPU"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label fx:id="cpuLabel" styleClass="stat-value-sm" text="—"/>
+                            <Label styleClass="stat-caption" text="CPU" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="cpuLabel" styleClass="stat-value-sm" text="—" />
                         </HBox>
-                        <ProgressBar fx:id="cpuBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar"/>
+                        <ProgressBar fx:id="cpuBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar" />
                     </VBox>
                     <VBox spacing="5.0">
                         <HBox alignment="CENTER_LEFT">
-                            <Label styleClass="stat-caption" text="TPS"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label fx:id="tpsLabel" styleClass="stat-value-sm" text="—"/>
+                            <Label styleClass="stat-caption" text="TPS" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="tpsLabel" styleClass="stat-value-sm" text="—" />
                         </HBox>
-                        <ProgressBar fx:id="tpsBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar"/>
+                        <ProgressBar fx:id="tpsBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar" />
                     </VBox>
                     <VBox spacing="5.0">
                         <HBox alignment="CENTER_LEFT">
-                            <Label styleClass="stat-caption" text="Jugadores"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label fx:id="playersLabel" styleClass="stat-value-sm" text="—"/>
+                            <Label styleClass="stat-caption" text="Jugadores" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="playersLabel" styleClass="stat-value-sm" text="—" />
                         </HBox>
-                        <ProgressBar fx:id="playersBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar"/>
+                        <ProgressBar fx:id="playersBar" maxWidth="Infinity" progress="0.0" styleClass="metric-bar" />
                     </VBox>
                 </VBox>
 
                 <!-- Jugadores conectados -->
                 <VBox spacing="10.0" styleClass="info-card">
-                    <Label fx:id="playersTitle" styleClass="info-title" text="Jugadores conectados"/>
-                    <FlowPane fx:id="playerChips" hgap="8.0" vgap="8.0"/>
+                    <Label fx:id="playersTitle" styleClass="info-title" text="Jugadores conectados" />
+                    <FlowPane fx:id="playerChips" hgap="8.0" vgap="8.0" />
                 </VBox>
 
                 <!-- Acciones rápidas -->
                 <VBox spacing="10.0" styleClass="info-card">
-                    <Label styleClass="info-title" text="Acciones rápidas"/>
-                    <Button maxWidth="Infinity" onAction="#onSaveAll" styleClass="ghost" text="▼  Guardar todo"/>
-                    <Button maxWidth="Infinity" onAction="#onBroadcast" styleClass="accent" text="✉  Anunciar"/>
-                    <Button maxWidth="Infinity" onAction="#onList" styleClass="ghost" text="☰  Listar jugadores"/>
+                    <Label styleClass="info-title" text="Acciones rápidas" />
+                    <Button maxWidth="Infinity" onAction="#onSaveAll" styleClass="ghost" text="Guardar todo">
+                  <graphic>
+                     <ImageView fitHeight="29.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../resources/save.png" />
+                        </image>
+                     </ImageView>
+                  </graphic></Button>
+                    <Button maxWidth="Infinity" onAction="#onBroadcast" styleClass="accent" text="Anunciar">
+                  <graphic>
+                     <ImageView fitHeight="29.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../resources/send-horizontal.png" />
+                        </image>
+                     </ImageView>
+                  </graphic></Button>
+                    <Button maxWidth="Infinity" onAction="#onList" styleClass="ghost" text="Listar jugadores">
+                  <graphic>
+                     <ImageView fitHeight="29.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../resources/list.png" />
+                        </image>
+                     </ImageView>
+                  </graphic></Button>
                     <HBox alignment="CENTER_LEFT" spacing="8.0">
-                        <Label styleClass="kv-key" text="Dificultad"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <ComboBox fx:id="difficultyCombo" onAction="#onDifficulty" prefWidth="150.0" promptText="—"/>
+                        <Label styleClass="kv-key" text="Dificultad" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="difficultyCombo" onAction="#onDifficulty" prefWidth="150.0" promptText="—" />
                     </HBox>
                 </VBox>
             </VBox>

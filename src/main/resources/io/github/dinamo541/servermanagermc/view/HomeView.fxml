@@ -47,7 +47,7 @@
 
             <Label styleClass="sidebar-section" text="NAVEGACIÓN" />
 
-            <VBox spacing="6.0">
+            <VBox spacing="10.0">
                 <Button fx:id="navDashboard" maxWidth="Infinity" onAction="#goDashboard" styleClass="nav-button" text="Dashboard">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">

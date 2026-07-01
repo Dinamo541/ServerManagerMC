@@ -1,7 +1,9 @@
 package io.github.dinamo541.servermanagermc.config;
 
+import io.github.dinamo541.servermanagermc.service.BackupService;
 import io.github.dinamo541.servermanagermc.service.ConsoleService;
 import io.github.dinamo541.servermanagermc.service.PlayerService;
+import io.github.dinamo541.servermanagermc.service.PropertiesService;
 import io.github.dinamo541.servermanagermc.service.ServerService;
 import io.github.dinamo541.servermanagermc.service.command.CommandRunner;
 import io.github.dinamo541.servermanagermc.service.command.LinuxCommandRunner;
@@ -21,6 +23,8 @@ public final class Services {
     private static ServerService server;
     private static ConsoleService console;
     private static PlayerService players;
+    private static PropertiesService properties;
+    private static BackupService backups;
 
     private Services() {
     }
@@ -53,5 +57,19 @@ public final class Services {
             players = new PlayerService(runner());
         }
         return players;
+    }
+
+    public static synchronized PropertiesService properties() {
+        if (properties == null) {
+            properties = new PropertiesService(runner());
+        }
+        return properties;
+    }
+
+    public static synchronized BackupService backups() {
+        if (backups == null) {
+            backups = new BackupService(runner());
+        }
+        return backups;
     }
 }

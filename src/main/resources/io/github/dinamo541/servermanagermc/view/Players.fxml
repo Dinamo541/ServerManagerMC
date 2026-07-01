@@ -52,6 +52,10 @@
             <Label fx:id="statHistory" styleClass="stat-value" text="-"/>
             <Label styleClass="stat-caption" text="Visitantes"/>
         </VBox>
+        <VBox styleClass="stat-card">
+            <Label fx:id="statWarned" styleClass="stat-value" text="-"/>
+            <Label styleClass="stat-caption" text="Advertidos"/>
+        </VBox>
     </FlowPane>
 
     <!-- ===== Cuerpo: lista (izquierda) + ficha (derecha) ===== -->
@@ -117,6 +121,8 @@
                         <Button fx:id="banBtn" maxWidth="Infinity" onAction="#onBan"
                                 styleClass="danger" text="Banear" HBox.hgrow="ALWAYS"/>
                     </HBox>
+                    <Button fx:id="warnBtn" maxWidth="Infinity" onAction="#onToggleWarn"
+                            styleClass="warn" text="Advertir"/>
 
                     <!-- Caja de motivo (kick/ban), inline, oculta por defecto -->
                     <VBox fx:id="reasonBox" managed="false" spacing="8.0" styleClass="reason-box" visible="false">

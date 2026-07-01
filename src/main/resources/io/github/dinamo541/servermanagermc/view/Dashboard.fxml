@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content-scroll" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.dinamo541.servermanagermc.controller.DashboardController">
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content-scroll" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="io.github.dinamo541.servermanagermc.controller.DashboardController">
     <VBox spacing="18.0" styleClass="content">
         <padding>
             <Insets bottom="24.0" left="24.0" right="24.0" top="22.0" />

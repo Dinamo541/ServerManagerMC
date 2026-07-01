@@ -1,23 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="io.github.dinamo541.servermanagermc.controller.BackupsController"
-      alignment="CENTER" styleClass="content">
-    <VBox alignment="CENTER" maxWidth="520.0" spacing="14.0" styleClass="placeholder">
-        <padding>
-            <Insets bottom="36.0" left="40.0" right="40.0" top="36.0"/>
-        </padding>
-        <Label styleClass="placeholder-icon" text="▤"/>
-        <Label styleClass="placeholder-title" text="Backups"/>
-        <Label styleClass="placeholder-badge" text="PRÓXIMAMENTE · ETAPA 4"/>
-        <Label styleClass="placeholder-desc" wrapText="true"
-               text="Backups locales y en Google Drive: crear, listar y restaurar con confirmación."/>
-        <ProgressBar maxWidth="Infinity" progress="0.08" styleClass="dev-bar"/>
-        <Label styleClass="placeholder-foot" text="8 % planificado"/>
-    </VBox>
+      fx:id="rootBox" spacing="16.0" styleClass="content">
+    <padding>
+        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
+    </padding>
+
+    <!-- ===== Cabecera ===== -->
+    <HBox alignment="CENTER_LEFT" spacing="12.0">
+        <Label styleClass="title" text="Backups"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lastBackupLabel" styleClass="muted" text="Último: —"/>
+        <Button fx:id="configBtn" onAction="#onConfigPaths" styleClass="ghost" text="⚙ Rutas"/>
+    </HBox>
+    <Label fx:id="backupStatusLabel" styleClass="action-status" wrapText="true"/>
+
+    <!-- ===== Cuerpo: lista (izquierda) + ficha (derecha) ===== -->
+    <HBox spacing="16.0" VBox.vgrow="ALWAYS">
+
+        <!-- == IZQUIERDA: pestanas + cronologia + lista + acciones == -->
+        <VBox spacing="12.0" styleClass="info-card" minWidth="360.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="category-tabs">
+                <Button fx:id="tabLocal" onAction="#onTabLocal" styleClass="tab-btn" text="Locales"/>
+                <Button fx:id="tabDrive" onAction="#onTabDrive" styleClass="tab-btn" text="Drive"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ProgressIndicator fx:id="backupSpinner" managed="false" prefHeight="18.0"
+                                   prefWidth="18.0" styleClass="action-spinner" visible="false"/>
+                <Label fx:id="countLabel" styleClass="muted" text="0"/>
+            </HBox>
+
+            <!-- ===== Cronologia (linea de tiempo) ===== -->
+            <VBox spacing="4.0" styleClass="timeline-card">
+                <padding>
+                    <Insets bottom="8.0" left="10.0" right="10.0" top="8.0"/>
+                </padding>
+                <Label styleClass="timeline-caption" text="CRONOLOGÍA"/>
+                <HBox fx:id="timelineBox" alignment="CENTER_LEFT" minHeight="26.0" styleClass="timeline"/>
+                <Label fx:id="timelineHint" styleClass="muted" text=""/>
+            </VBox>
+
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+                <VBox fx:id="backupList" spacing="6.0" styleClass="player-list"/>
+            </ScrollPane>
+
+            <HBox spacing="8.0">
+                <Button fx:id="createBtn" maxWidth="Infinity" onAction="#onCreate" styleClass="success"
+                        text="Crear backup ahora" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="uploadBtn" onAction="#onUpload" styleClass="accent" text="Subir a Drive"/>
+            </HBox>
+        </VBox>
+
+        <!-- == DERECHA: ficha del backup seleccionado == -->
+        <ScrollPane fx:id="rightPane" fitToWidth="true" hbarPolicy="NEVER" managed="false"
+                    maxWidth="400.0" minWidth="320.0" styleClass="content-scroll" visible="false">
+            <VBox fx:id="detailPanel" spacing="14.0" styleClass="detail-card">
+                <padding>
+                    <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                </padding>
+
+                <!-- Identidad -->
+                <HBox alignment="TOP_LEFT" spacing="10.0">
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="detailName" styleClass="detail-name" text="-" wrapText="true"/>
+                        <Label fx:id="detailLocation" styleClass="detail-summary" text="-"/>
+                    </VBox>
+                    <Button onAction="#onCloseDetail" styleClass="detail-close" text="✕"/>
+                </HBox>
+
+                <!-- Informacion -->
+                <Label styleClass="detail-section-title" text="Información"/>
+                <VBox fx:id="infoBox" spacing="6.0" styleClass="detail-section"/>
+
+                <!-- Acciones -->
+                <Label styleClass="detail-section-title" text="Acciones"/>
+                <VBox spacing="8.0">
+                    <HBox spacing="8.0">
+                        <Button fx:id="downloadBtn" maxWidth="Infinity" onAction="#onDownload"
+                                styleClass="ghost" text="Descargar" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="restoreBtn" maxWidth="Infinity" onAction="#onRestore"
+                                styleClass="danger" text="Restaurar" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <HBox spacing="8.0">
+                        <Button fx:id="renameBtn" maxWidth="Infinity" onAction="#onRename"
+                                styleClass="ghost" text="Renombrar" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="moveBtn" maxWidth="Infinity" onAction="#onMove"
+                                styleClass="ghost" text="Mover" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                    <Button fx:id="deleteBtn" maxWidth="Infinity" onAction="#onDelete"
+                            styleClass="danger" text="Borrar"/>
+
+                    <!-- ===== Confirmacion de restauracion (type-to-confirm) ===== -->
+                    <VBox fx:id="confirmBox" managed="false" spacing="8.0" styleClass="reason-box" visible="false">
+                        <padding>
+                            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                        </padding>
+                        <Label styleClass="muted" wrapText="true"
+                               text="Escribe el nombre del backup para confirmar la restauración (sobrescribe el mundo actual):"/>
+                        <TextField fx:id="confirmField" promptText="Nombre exacto del backup..."/>
+                        <HBox spacing="8.0">
+                            <Button fx:id="confirmRestoreBtn" maxWidth="Infinity" onAction="#onConfirmRestore"
+                                    styleClass="danger" text="Confirmar restauración" HBox.hgrow="ALWAYS"/>
+                            <Button onAction="#onCancelPanels" styleClass="ghost" text="Cancelar"/>
+                        </HBox>
+                        <Label fx:id="restoreStatus" styleClass="action-status" wrapText="true"/>
+                    </VBox>
+
+                    <!-- ===== Renombrar ===== -->
+                    <VBox fx:id="renameBox" managed="false" spacing="8.0" styleClass="panel-box" visible="false">
+                        <padding>
+                            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                        </padding>
+                        <Label styleClass="muted" text="Nuevo nombre (debe terminar en .tar.gz):"/>
+                        <TextField fx:id="renameField" promptText="mundo-....tar.gz"/>
+                        <HBox spacing="8.0">
+                            <Button fx:id="renameConfirmBtn" maxWidth="Infinity" onAction="#onConfirmRename"
+                                    styleClass="accent" text="Renombrar" HBox.hgrow="ALWAYS"/>
+                            <Button onAction="#onCancelPanels" styleClass="ghost" text="Cancelar"/>
+                        </HBox>
+                        <Label fx:id="renameStatus" styleClass="action-status" wrapText="true"/>
+                    </VBox>
+
+                    <!-- ===== Confirmacion simple (borrar / mover) ===== -->
+                    <VBox fx:id="simpleConfirmBox" managed="false" spacing="8.0" styleClass="reason-box" visible="false">
+                        <padding>
+                            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                        </padding>
+                        <Label fx:id="simpleConfirmLabel" styleClass="muted" text="" wrapText="true"/>
+                        <HBox spacing="8.0">
+                            <Button fx:id="simpleConfirmBtn" maxWidth="Infinity" onAction="#onSimpleConfirm"
+                                    styleClass="danger" text="Confirmar" HBox.hgrow="ALWAYS"/>
+                            <Button onAction="#onCancelPanels" styleClass="ghost" text="Cancelar"/>
+                        </HBox>
+                    </VBox>
+
+                    <Label fx:id="statusMessage" styleClass="action-status" wrapText="true"/>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </HBox>
 </VBox>

@@ -50,7 +50,7 @@ public class PlayersController {
 
     /** Resumen de un jugador para pintar una fila (los datos ricos van en la ficha). */
     private record Row(String name, String uuid, boolean op, boolean banned,
-                       boolean whitelisted, boolean online, boolean known) {
+                       boolean whitelisted, boolean online, boolean known, boolean warned) {
     }
 
     private static final DateTimeFormatter DATE =
@@ -75,6 +75,7 @@ public class PlayersController {
     @FXML private Label statOps;
     @FXML private Label statBanned;
     @FXML private Label statHistory;
+    @FXML private Label statWarned;
 
     // ----- Panel "añadir por nombre" -----
     @FXML private ScrollPane addPane;
@@ -97,6 +98,7 @@ public class PlayersController {
     @FXML private Button whitelistBtn;
     @FXML private Button kickBtn;
     @FXML private Button banBtn;
+    @FXML private Button warnBtn;
     @FXML private VBox liveBox;
     @FXML private ComboBox<String> gamemodeCombo;
     @FXML private VBox reasonBox;
@@ -110,6 +112,7 @@ public class PlayersController {
 
     private final Map<String, Row> allRows = new LinkedHashMap<>();
     private final java.util.Set<String> onlineLower = new java.util.HashSet<>();
+    private final java.util.Set<String> warnedLower = new java.util.HashSet<>();
     private boolean rosterLoaded;
     private String selectedName;
     private PlayerDetail selectedDetail;
@@ -162,6 +165,7 @@ public class PlayersController {
         List<PlayerDetail> banned = service.bannedPlayers();
         List<PlayerDetail> known = service.knownPlayers();
         List<String> online = service.onlinePlayers();
+        java.util.Set<String> warnedSet = service.warnedPlayers();
 
         java.util.Set<String> onlineSet = new java.util.HashSet<>();
         for (String n : online) {
@@ -169,30 +173,37 @@ public class PlayersController {
         }
 
         Map<String, Row> map = new LinkedHashMap<>();
-        mergeAll(map, whitelist, onlineSet, false);
-        mergeAll(map, ops, onlineSet, false);
-        mergeAll(map, banned, onlineSet, false);
-        mergeAll(map, known, onlineSet, true); // estos ya entraron al mundo
+        mergeAll(map, whitelist, onlineSet, warnedSet, false);
+        mergeAll(map, ops, onlineSet, warnedSet, false);
+        mergeAll(map, banned, onlineSet, warnedSet, false);
+        mergeAll(map, known, onlineSet, warnedSet, true); // estos ya entraron al mundo
         // Conectados que no estuvieran en ninguna lista (raro, pero posible).
         for (String n : online) {
             String key = n.toLowerCase(Locale.ROOT);
             if (!map.containsKey(key)) {
-                map.put(key, new Row(n, "—", false, false, false, true, true));
+                map.put(key, new Row(n, "—", false, false, false, true, true, warnedSet.contains(key)));
+            }
+        }
+        // Advertidos que no estén en ninguna otra lista (advertencia a un nick suelto).
+        for (String w : warnedSet) {
+            if (!map.containsKey(w)) {
+                map.put(w, new Row(w, "—", false, false, false, false, false, true));
             }
         }
         return map;
     }
 
     private void mergeAll(Map<String, Row> map, List<PlayerDetail> list,
-                          java.util.Set<String> onlineSet, boolean known) {
+                          java.util.Set<String> onlineSet, java.util.Set<String> warnedSet, boolean known) {
         for (PlayerDetail p : list) {
             String key = p.name() == null ? "" : p.name().toLowerCase(Locale.ROOT);
             boolean online = onlineSet.contains(key);
+            boolean warned = warnedSet.contains(key);
             boolean op = p.op() || p.opLevel() > 0;
             Row prev = map.get(key);
             if (prev == null) {
                 map.put(key, new Row(p.name(), p.uuid(), op, p.banned(),
-                        p.whitelisted(), online, known));
+                        p.whitelisted(), online, known, warned));
             } else {
                 map.put(key, new Row(prev.name(),
                         prev.uuid() != null && !prev.uuid().equals("—") ? prev.uuid() : p.uuid(),
@@ -200,7 +211,8 @@ public class PlayersController {
                         prev.banned() || p.banned(),
                         prev.whitelisted() || p.whitelisted(),
                         prev.online() || online,
-                        prev.known() || known));
+                        prev.known() || known,
+                        prev.warned() || warned));
             }
         }
     }
@@ -209,9 +221,14 @@ public class PlayersController {
         allRows.clear();
         allRows.putAll(map);
         onlineLower.clear();
+        warnedLower.clear();
         for (Row r : map.values()) {
+            String low = r.name().toLowerCase(Locale.ROOT);
             if (r.online()) {
-                onlineLower.add(r.name().toLowerCase(Locale.ROOT));
+                onlineLower.add(low);
+            }
+            if (r.warned()) {
+                warnedLower.add(low);
             }
         }
         rosterLoaded = true;
@@ -232,6 +249,7 @@ public class PlayersController {
         int ops = 0;
         int banned = 0;
         int history = 0;
+        int warnedCount = 0;
         for (Row r : allRows.values()) {
             if (r.online()) {
                 online++;
@@ -248,6 +266,9 @@ public class PlayersController {
             if (isVisitor(r)) {
                 history++;
             }
+            if (r.warned()) {
+                warnedCount++;
+            }
         }
         statTotal.setText(String.valueOf(total));
         statOnline.setText(String.valueOf(online));
@@ -255,6 +276,7 @@ public class PlayersController {
         statOps.setText(String.valueOf(ops));
         statBanned.setText(String.valueOf(banned));
         statHistory.setText(String.valueOf(history));
+        statWarned.setText(String.valueOf(warnedCount));
     }
 
     /** Visitante = ya entró al mundo pero no está en whitelist ni baneado. */
@@ -273,7 +295,7 @@ public class PlayersController {
                 case WHITELIST -> r.whitelisted();
                 case OPS -> r.op();
                 case BANNED -> r.banned();
-                case HISTORY -> isVisitor(r);
+                case HISTORY -> true; // Historial: todos los jugadores conocidos
             };
             if (inTab && (q.isEmpty() || r.name().toLowerCase(Locale.ROOT).contains(q))) {
                 out.add(r);
@@ -312,7 +334,7 @@ public class PlayersController {
             case WHITELIST -> "Whitelist vacía";
             case OPS -> "Sin operadores";
             case BANNED -> "Sin baneados";
-            case HISTORY -> "Sin visitantes registrados";
+            case HISTORY -> "Sin jugadores registrados";
         };
     }
 
@@ -320,7 +342,8 @@ public class PlayersController {
         StringBuilder sb = new StringBuilder();
         for (Row r : rows) {
             sb.append(r.name()).append(r.op() ? 'o' : '-')
-              .append(r.banned() ? 'b' : '-').append(r.online() ? 'n' : '-').append('|');
+              .append(r.banned() ? 'b' : '-').append(r.online() ? 'n' : '-')
+              .append(r.whitelisted() ? 'w' : '-').append(r.warned() ? '!' : '-').append('|');
         }
         return sb.toString();
     }
@@ -330,6 +353,9 @@ public class PlayersController {
         row.getStyleClass().add("player-row");
         if (r.online()) {
             row.getStyleClass().add("player-row-online");
+        }
+        if (r.warned()) {
+            row.getStyleClass().add("player-row-warned");
         }
         if (r.banned()) {
             row.getStyleClass().add("player-row-banned");
@@ -352,8 +378,14 @@ public class PlayersController {
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         row.getChildren().addAll(dot, name, spacer);
+        if (r.whitelisted()) {
+            row.getChildren().add(badge("WL", "badge-whitelisted"));
+        }
         if (r.op()) {
             row.getChildren().add(badge("OP", "badge-op"));
+        }
+        if (r.warned()) {
+            row.getChildren().add(badge("WARN", "badge-warn"));
         }
         if (r.banned()) {
             row.getChildren().add(badge("BAN", "badge-banned"));
@@ -395,6 +427,7 @@ public class PlayersController {
     private void renderDetail(PlayerDetail d) {
         selectedDetail = d;
         boolean online = onlineLower.contains(d.name().toLowerCase(Locale.ROOT));
+        boolean warned = warnedLower.contains(d.name().toLowerCase(Locale.ROOT));
 
         detailAvatar.setText(d.initial());
         detailName.setText(d.name());
@@ -410,6 +443,9 @@ public class PlayersController {
         }
         if (d.whitelisted()) {
             detailBadges.getChildren().add(badge("WHITELIST", "badge-whitelisted"));
+        }
+        if (warned) {
+            detailBadges.getChildren().add(badge("ADVERTIDO", "badge-warn"));
         }
         if (d.banned()) {
             detailBadges.getChildren().add(badge("BANEADO", "badge-banned"));
@@ -450,6 +486,7 @@ public class PlayersController {
 
         opBtn.setText(d.op() ? "Quitar OP" : "Dar OP");
         whitelistBtn.setText(d.whitelisted() ? "Quitar whitelist" : "Añadir whitelist");
+        warnBtn.setText(warned ? "Quitar advertencia" : "Advertir");
         kickBtn.setDisable(!online);
 
         // Acciones que actúan sobre la entidad: solo si está conectado.
@@ -658,6 +695,18 @@ public class PlayersController {
         runAction(selectedDetail.whitelisted()
                 ? () -> Services.players().removeFromWhitelist(name)
                 : () -> Services.players().addToWhitelist(name));
+    }
+
+    @FXML
+    private void onToggleWarn() {
+        if (selectedDetail == null) {
+            return;
+        }
+        String name = selectedDetail.name();
+        boolean warned = warnedLower.contains(name.toLowerCase(Locale.ROOT));
+        runAction(warned
+                ? () -> Services.players().removeWarning(name)
+                : () -> Services.players().addWarning(name));
     }
 
     @FXML

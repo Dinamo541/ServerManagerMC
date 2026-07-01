@@ -5,13 +5,15 @@ package io.github.dinamo541.servermanagermc.config;
  * <ul>
  *   <li>{@link #DEV}  — desarrollo en "Lady" (Windows): comandos simulados (mock).</li>
  *   <li>{@link #PROD} — ejecución real en "Monica" (Linux): systemctl/tmux/etc.</li>
+ *   <li>{@link #REMOTE} — ejecución remota en "Monica" (Linux): comunicación via SSH/REST.</li>
  * </ul>
- * Resolución: propiedad de sistema {@code -Dmonica.profile=dev|prod} si está
+ * Resolución: propiedad de sistema {@code -Dmonica.profile=dev|prod|remote} si está
  * presente; si no, se autodetecta por el sistema operativo (Windows → DEV).
  */
 public enum AppProfile {
-    DEV,
-    PROD;
+    DEV,    // Windows local: MockCommandRunner
+    PROD,   // Linux local (Monica): LinuxCommandRunner
+    REMOTE; // Cualquier SO: habla con Monica via SSH/REST (Desarrollar después de terminar la app local)
 
     private static volatile AppProfile current;
 
@@ -32,7 +34,14 @@ public enum AppProfile {
     private static AppProfile resolve() {
         String override = System.getProperty("monica.profile");
         if (override != null && !override.isBlank()) {
-            return override.equalsIgnoreCase("prod") ? PROD : DEV;
+            switch (override.toLowerCase()) {
+                case "remote":
+                    return REMOTE;
+                case "prod":
+                    return PROD;
+                default:
+                    return DEV;
+            }
         }
         String os = System.getProperty("os.name", "").toLowerCase();
         return os.contains("win") ? DEV : PROD;
@@ -44,6 +53,16 @@ public enum AppProfile {
 
     /** Etiqueta corta para mostrar en la UI (badge del sidebar). */
     public String badge() {
-        return this == DEV ? "DEV · mock" : "PROD · Monica";
+        switch (this) {
+            case DEV:
+                return "DEV · mock";
+            case PROD:
+                return "PROD · Monica";
+            case REMOTE:
+                return "REMOTE · Monica";
+            default:
+                return "UNKNOWN";
+        }
     }
+
 }

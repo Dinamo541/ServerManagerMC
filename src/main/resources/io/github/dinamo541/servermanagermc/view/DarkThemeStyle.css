@@ -911,6 +911,10 @@
     -fx-border-color: transparent transparent transparent -fx-color-accent-500;
 }
 
+.player-row-warned {
+    -fx-background-color: rgba(255, 167, 38, 0.12);
+}
+
 .player-row-banned {
     -fx-background-color: rgba(239, 83, 80, 0.12);
 }
@@ -995,6 +999,17 @@
     -fx-effect: null;
 }
 
+/* Botón de advertencia (ámbar) */
+.button.warn {
+    -fx-background-color: linear-gradient(to bottom, #FFB74D, #FB8C00);
+    -fx-text-fill: #2A1F33;
+}
+
+.button.warn:hover {
+    -fx-background-color: linear-gradient(to bottom, #FFC56E, #FFA726);
+    -fx-effect: dropshadow(gaussian, rgba(255, 167, 38, 0.5), 12, 0.2, 0, 3);
+}
+
 .detail-section {
     -fx-background-color: rgba(20, 15, 26, 0.35);
     -fx-background-radius: 10px;
@@ -1025,6 +1040,11 @@
     -fx-background-color: linear-gradient(to bottom, #4CAF50, #43A047);
 }
 
+.badge-warn {
+    -fx-background-color: linear-gradient(to bottom, #FFA726, #FB8C00);
+    -fx-text-fill: #2A1F33;
+}
+
 .badge-banned {
     -fx-background-color: linear-gradient(to bottom, #EF5350, #E53935);
 }
@@ -1040,5 +1060,253 @@
     -fx-background-color: rgba(239, 83, 80, 0.1);
     -fx-background-radius: 10px;
     -fx-border-color: rgba(239, 83, 80, 0.35);
+    -fx-border-radius: 10px;
+}
+
+/* ========================================================================
+    PROPERTIES — editor de server.properties (secciones, filas, toggles, sliders)
+   ======================================================================== */
+
+.section-card {
+    -fx-background-color: rgba(42, 31, 51, 0.5);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 14px;
+}
+
+.section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-accent-300;
+    -fx-padding: 0 0 6 0;
+}
+
+.prop-row {
+    -fx-padding: 3 0 3 0;
+}
+
+.prop-label {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 13px;
+    -fx-min-width: 240px;
+}
+
+.prop-value {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-min-width: 64px;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* ---- Deslizador de propiedad ---- */
+.prop-slider {
+    -fx-pref-width: 200px;
+}
+
+.prop-slider .track {
+    -fx-background-color: -fx-color-surface-muted;
+    -fx-background-radius: 6;
+    -fx-pref-height: 6px;
+}
+
+.prop-slider .thumb {
+    -fx-background-color: -fx-color-primary-500;
+    -fx-background-radius: 12;
+    -fx-pref-width: 15px;
+    -fx-pref-height: 15px;
+}
+
+.prop-slider .thumb:hover {
+    -fx-background-color: -fx-color-primary-300;
+    -fx-effect: dropshadow(gaussian, rgba(142, 107, 175, 0.5), 8, 0.2, 0, 0);
+}
+
+.prop-slider .axis {
+    -fx-tick-label-fill: -fx-color-text-secondary;
+    -fx-font-size: 9px;
+}
+
+.prop-slider .axis .axis-tick-mark,
+.prop-slider .axis .axis-minor-tick-mark {
+    -fx-stroke: rgba(197, 184, 214, 0.3);
+}
+
+/* ---- Interruptor (CheckBox estilizado) ---- */
+.toggle-switch {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 13px;
+}
+
+.toggle-switch .box {
+    -fx-background-color: -fx-color-surface-muted;
+    -fx-background-radius: 6;
+    -fx-border-color: -fx-color-border-base;
+    -fx-border-radius: 6;
+    -fx-padding: 5;
+}
+
+.toggle-switch:hover .box {
+    -fx-border-color: -fx-color-border-strong;
+}
+
+.toggle-switch:selected .box {
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #43A047);
+    -fx-border-color: transparent;
+}
+
+.toggle-switch:selected .mark {
+    -fx-background-color: white;
+}
+
+/* ---- Celda de etiqueta: titulo (ES) + subtitulo (clave) + ayuda ---- */
+.prop-labelbox {
+    -fx-min-width: 270px;
+}
+
+.prop-title {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.prop-subtitle {
+    -fx-text-fill: rgba(197, 184, 214, 0.6);
+    -fx-font-size: 10.5px;
+    -fx-font-family: "Consolas", "JetBrains Mono", monospace;
+}
+
+.prop-help {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-color-border-base;
+    -fx-border-radius: 100;
+    -fx-background-radius: 100;
+    -fx-min-width: 18px;
+    -fx-min-height: 18px;
+    -fx-max-width: 18px;
+    -fx-max-height: 18px;
+    -fx-padding: 0;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-cursor: hand;
+}
+
+.prop-help:hover {
+    -fx-background-color: -fx-color-accent-500;
+    -fx-border-color: -fx-color-accent-500;
+    -fx-text-fill: white;
+    -fx-effect: null;
+}
+
+/* ---- Ventana modal de ayuda de una propiedad ---- */
+.help-modal {
+    -fx-background-color: -fx-color-bg-main;
+}
+
+.help-modal-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text-primary;
+}
+
+.help-modal-sub {
+    -fx-font-size: 12px;
+    -fx-font-family: "Consolas", "JetBrains Mono", monospace;
+    -fx-text-fill: -fx-color-accent-300;
+}
+
+.help-modal-desc {
+    -fx-font-size: 13.5px;
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-line-spacing: 3px;
+}
+
+/* ========================================================================
+    BACKUPS — lista, filas, detalle
+   ======================================================================== */
+
+.backup-row {
+    -fx-background-color: rgba(58, 43, 71, 0.35);
+    -fx-background-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10px;
+    -fx-border-width: 0 0 0 3;
+    -fx-padding: 9 12 9 12;
+}
+
+.backup-row:hover {
+    -fx-background-color: rgba(74, 54, 91, 0.6);
+    -fx-border-color: transparent transparent transparent rgba(191, 166, 217, 0.5);
+}
+
+.backup-row.selected {
+    -fx-background-color: rgba(142, 107, 175, 0.28);
+    -fx-border-color: transparent transparent transparent -fx-color-accent-500;
+}
+
+.backup-row-icon {
+    -fx-text-fill: -fx-color-primary-500;
+    -fx-font-size: 16px;
+}
+
+.backup-row-name {
+    -fx-text-fill: -fx-color-text-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.backup-row-size {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 11px;
+}
+
+/* ---- Cronología (línea de tiempo) ---- */
+.timeline-card {
+    -fx-background-color: rgba(20, 15, 26, 0.35);
+    -fx-background-radius: 10px;
+}
+
+.timeline-caption {
+    -fx-text-fill: -fx-color-text-secondary;
+    -fx-font-size: 9.5px;
+    -fx-font-weight: bold;
+}
+
+.timeline {
+    -fx-padding: 2 4 2 4;
+}
+
+.timeline-line {
+    -fx-min-height: 2px;
+    -fx-max-height: 2px;
+    -fx-min-width: 8px;
+    -fx-background-color: rgba(142, 107, 175, 0.35);
+    -fx-background-radius: 2;
+}
+
+.timeline-dot {
+    -fx-text-fill: -fx-color-primary-500;
+    -fx-font-size: 12px;
+    -fx-padding: 0 1 0 1;
+}
+
+.timeline-dot.latest {
+    -fx-text-fill: -fx-color-online;
+    -fx-font-size: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(102, 187, 106, 0.6), 8, 0.3, 0, 0);
+}
+
+.timeline-dot.selected {
+    -fx-text-fill: -fx-color-accent-300;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 167, 38, 0.6), 8, 0.3, 0, 0);
+}
+
+/* ---- Panel inline neutral (renombrar) ---- */
+.panel-box {
+    -fx-background-color: rgba(142, 107, 175, 0.1);
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(142, 107, 175, 0.35);
     -fx-border-radius: 10px;
 }

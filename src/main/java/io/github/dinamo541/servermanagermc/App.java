@@ -5,6 +5,7 @@ import io.github.dinamo541.corefx.ui.ThemeManager;
 import io.github.dinamo541.servermanagermc.concurrent.AsyncExecutor;
 import io.github.dinamo541.servermanagermc.config.AppProfile;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.stage.Stage;
 
 /**
@@ -16,6 +17,13 @@ public class App extends Application {
 
     public static final String APP_NAME = "Server Minecraft Manager";
 
+    private static HostServices hostServices;
+
+    /** Servicios de la aplicación (p. ej. abrir URLs en el navegador del sistema). */
+    public static HostServices hostServices() {
+        return hostServices;
+    }
+
     @Override
     public void init() {
         // Resuelve el perfil temprano: DEV (mock) en Windows / PROD (real) en Monica.
@@ -24,6 +32,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        hostServices = getHostServices();
+
         // 1) Tema oscuro propio (DarkThemeStyle.css) registrado en el ThemeManager
         //    de CoreFx y aplicado a cada escena vía themeApplier.
         ThemeManager theme = ThemeManager.getInstance();

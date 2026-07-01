@@ -1,23 +1,396 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="io.github.dinamo541.servermanagermc.controller.PropertiesController"
-      alignment="CENTER" styleClass="content">
-    <VBox alignment="CENTER" maxWidth="520.0" spacing="14.0" styleClass="placeholder">
+<ScrollPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="io.github.dinamo541.servermanagermc.controller.PropertiesController"
+            fitToWidth="true" hbarPolicy="NEVER" styleClass="content-scroll">
+    <VBox fx:id="rootBox" spacing="16.0" styleClass="content">
         <padding>
-            <Insets bottom="36.0" left="40.0" right="40.0" top="36.0"/>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
         </padding>
-        <Label styleClass="placeholder-icon" text="⚙"/>
-        <Label styleClass="placeholder-title" text="Properties"/>
-        <Label styleClass="placeholder-badge" text="PRÓXIMAMENTE · ETAPA 3"/>
-        <Label styleClass="placeholder-desc" wrapText="true"
-               text="Editor visual de server.properties: interruptores, deslizadores y listas, protegiendo opciones sensibles."/>
-        <ProgressBar maxWidth="Infinity" progress="0.10" styleClass="dev-bar"/>
-        <Label styleClass="placeholder-foot" text="10 % planificado"/>
+
+        <!-- ===== Cabecera ===== -->
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="title" text="Properties"/>
+                <Label fx:id="pathLabel" styleClass="muted" text="server.properties"/>
+            </VBox>
+            <Button fx:id="reloadBtn" onAction="#onReload" styleClass="ghost" text="Recargar"/>
+            <Button fx:id="saveBtn" onAction="#onSave" styleClass="accent" text="Guardar cambios"/>
+        </HBox>
+        <Label fx:id="actionStatus" styleClass="action-status" wrapText="true"/>
+
+        <!-- ===== Seccion 1: General ===== -->
+        <VBox spacing="8.0" styleClass="section-card">
+            <padding>
+                <Insets bottom="16.0" left="20.0" right="20.0" top="16.0"/>
+            </padding>
+            <Label styleClass="section-title" text="General"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="online-mode"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="onlineModeToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="motd"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="motdField" prefWidth="280.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="level-name"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="levelNameField" prefWidth="240.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="level-seed"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="levelSeedField" prefWidth="240.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="difficulty"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="difficultyCombo" prefWidth="170.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="gamemode"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="gamemodeCombo" prefWidth="170.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="server-port"/>
+                <Slider fx:id="serverPortSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="65535.0" min="1024.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="serverPortValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="max-players"/>
+                <Slider fx:id="maxPlayersSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="100.0" min="0.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="maxPlayersValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="hardcore"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="hardcoreToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="enable-status"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="enableStatusToggle" styleClass="toggle-switch"/>
+            </HBox>
+        </VBox>
+
+        <!-- ===== Seccion 2: Jugabilidad ===== -->
+        <VBox spacing="8.0" styleClass="section-card">
+            <padding>
+                <Insets bottom="16.0" left="20.0" right="20.0" top="16.0"/>
+            </padding>
+            <Label styleClass="section-title" text="Jugabilidad"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="pvp"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="pvpToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="allow-flight"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="allowFlightToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="spawn-animals"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="spawnAnimalsToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="spawn-monsters"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="spawnMonstersToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="spawn-npcs"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="spawnNpcsToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="allow-nether"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="allowNetherToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="generate-structures"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="generateStructuresToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="player-idle-timeout"/>
+                <Slider fx:id="playerIdleTimeoutSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="240.0" min="0.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="playerIdleTimeoutValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="hide-online-players"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="hideOnlinePlayersToggle" styleClass="toggle-switch"/>
+            </HBox>
+        </VBox>
+
+        <!-- ===== Seccion 3: Mundo ===== -->
+        <VBox spacing="8.0" styleClass="section-card">
+            <padding>
+                <Insets bottom="16.0" left="20.0" right="20.0" top="16.0"/>
+            </padding>
+            <Label styleClass="section-title" text="Mundo"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="view-distance"/>
+                <Slider fx:id="viewDistanceSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="32.0" min="3.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="viewDistanceValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="simulation-distance"/>
+                <Slider fx:id="simulationDistanceSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="32.0" min="3.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="simulationDistanceValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="max-world-size"/>
+                <Slider fx:id="maxWorldSizeSlider" blockIncrement="1000.0" majorTickUnit="1.0"
+                        max="29999984.0" min="1.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="maxWorldSizeField" prefWidth="120.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="level-type"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="levelTypeCombo" prefWidth="190.0"/>
+            </HBox>
+        </VBox>
+
+        <!-- ===== Seccion 4: Seguridad ===== -->
+        <VBox spacing="8.0" styleClass="section-card">
+            <padding>
+                <Insets bottom="16.0" left="20.0" right="20.0" top="16.0"/>
+            </padding>
+            <Label styleClass="section-title" text="Seguridad"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="enforce-whitelist"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="enforceWhitelistToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="white-list"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="whiteListToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="enforce-secure-profile"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="enforceSecureProfileToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="prevent-proxy-connections"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="preventProxyConnectionsToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="op-permission-level"/>
+                <Slider fx:id="opPermissionLevelSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="4.0" min="1.0" minorTickCount="0" showTickLabels="true"
+                        showTickMarks="true" snapToTicks="true" styleClass="prop-slider"
+                        HBox.hgrow="ALWAYS"/>
+                <Label fx:id="opPermissionLevelValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="function-permission-level"/>
+                <Slider fx:id="functionPermissionLevelSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="4.0" min="0.0" minorTickCount="0" showTickLabels="true"
+                        showTickMarks="true" snapToTicks="true" styleClass="prop-slider"
+                        HBox.hgrow="ALWAYS"/>
+                <Label fx:id="functionPermissionLevelValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="enable-command-block"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="enableCommandBlockToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="broadcast-console-to-ops"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="broadcastConsoleToOpsToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="text-filtering-config"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="textFilteringConfigField" prefWidth="240.0"/>
+            </HBox>
+        </VBox>
+
+        <!-- ===== Seccion 5: Red ===== -->
+        <VBox spacing="8.0" styleClass="section-card">
+            <padding>
+                <Insets bottom="16.0" left="20.0" right="20.0" top="16.0"/>
+            </padding>
+            <Label styleClass="section-title" text="Red"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="server-ip"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="serverIpField" prefWidth="240.0" promptText="(vacio = todas las interfaces)"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="rate-limit"/>
+                <Slider fx:id="rateLimitSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="1000.0" min="0.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="rateLimitValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="network-compression-threshold"/>
+                <Slider fx:id="networkCompressionThresholdSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="1024.0" min="-1.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="networkCompressionThresholdValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="use-native-transport"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="useNativeTransportToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="enable-rcon"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="enableRconToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="rcon.password"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <PasswordField fx:id="rconPasswordField" prefWidth="240.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="rcon.port"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="rconPortField" prefWidth="140.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="enable-query"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="enableQueryToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="query.port"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="queryPortField" prefWidth="140.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="broadcast-rcon-to-ops"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="broadcastRconToOpsToggle" styleClass="toggle-switch"/>
+            </HBox>
+        </VBox>
+
+        <!-- ===== Seccion 6: Rendimiento ===== -->
+        <VBox spacing="8.0" styleClass="section-card">
+            <padding>
+                <Insets bottom="16.0" left="20.0" right="20.0" top="16.0"/>
+            </padding>
+            <Label styleClass="section-title" text="Rendimiento"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="max-tick-time"/>
+                <Slider fx:id="maxTickTimeSlider" blockIncrement="1000.0" majorTickUnit="1.0"
+                        max="600000.0" min="0.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="maxTickTimeValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="entity-broadcast-range-percentage"/>
+                <Slider fx:id="entityBroadcastRangeSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="1000.0" min="10.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="entityBroadcastRangeValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="max-chained-neighbor-updates"/>
+                <Slider fx:id="maxChainedNeighborUpdatesSlider" blockIncrement="1000.0" majorTickUnit="1.0"
+                        max="1000000.0" min="0.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="maxChainedNeighborUpdatesValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="sync-chunk-writes"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="syncChunkWritesToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="region-file-compression"/>
+                <Slider fx:id="regionFileCompressionSlider" blockIncrement="1.0" majorTickUnit="1.0"
+                        max="256.0" min="0.0" minorTickCount="0" snapToTicks="true"
+                        styleClass="prop-slider" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="regionFileCompressionValue" styleClass="prop-value" text="0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="enable-jmx-monitoring"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="enableJmxMonitoringToggle" styleClass="toggle-switch"/>
+            </HBox>
+        </VBox>
+
+        <!-- ===== Seccion 7: Recursos ===== -->
+        <VBox spacing="8.0" styleClass="section-card">
+            <padding>
+                <Insets bottom="16.0" left="20.0" right="20.0" top="16.0"/>
+            </padding>
+            <Label styleClass="section-title" text="Recursos"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="resource-pack"/>
+                <TextField fx:id="resourcePackField" promptText="https://..." HBox.hgrow="ALWAYS"/>
+                <Button fx:id="testPackBtn" onAction="#onTestResourcePack" styleClass="ghost" text="Probar URL"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="resource-pack-sha1"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="resourcePackSha1Field" prefWidth="280.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="resource-pack-prompt"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="resourcePackPromptField" prefWidth="280.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="require-resource-pack"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <CheckBox fx:id="requireResourcePackToggle" styleClass="toggle-switch"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="initial-enabled-packs"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="initialEnabledPacksField" prefWidth="240.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="initial-disabled-packs"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="initialDisabledPacksField" prefWidth="240.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="prop-row">
+                <Label styleClass="prop-label" text="bug-report-url"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="bugReportUrlField" prefWidth="280.0"/>
+            </HBox>
+        </VBox>
     </VBox>
-</VBox>
+</ScrollPane>
